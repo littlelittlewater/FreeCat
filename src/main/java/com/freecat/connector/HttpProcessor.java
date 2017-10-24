@@ -1,7 +1,6 @@
 package com.freecat.connector;
 
 
-import com.freecat.http.*;
 import com.freecat.lifecycle.Lifecycle;
 import com.freecat.lifecycle.LifecycleException;
 import com.freecat.lifecycle.LifecycleListener;
@@ -20,40 +19,16 @@ import java.util.TreeMap;
 
 
 /**
- * Implementation of a request processor (and its associated thread) that may
- * be used by an HttpConnector to process individual requests.  The connector
- * will allocate a processor from its pool, assign a particular socket to it,
- * and the processor will then execute the processing required to complete
- * the request.  When the processor is completed, it will recycle itself.
- *
- * @author Craig R. McClanahan
- * @author Remy Maucherat
- * @version $Revision: 1.46 $ $Date: 2002/04/04 17:50:34 $
- * @deprecated
+ * 后台进程是通过生命周期start来管理启动
+ * 后台进程会在创建的时候被阻塞，除非接受到其他方法的唤醒，然后会处理socket，最后会进行回收
  */
 
 final class HttpProcessor
     implements Lifecycle, Runnable {
 
-
-    // ----------------------------------------------------- Manifest Constants
-
-
     /**
-     * Server information string for this server.
-     */
-    private static final String SERVER_INFO =
-        ServerInfo.getServerInfo() + " (HTTP/1.1 Connector)";
-
-
-    // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * Construct a new HttpProcessor associated with the specified connector.
+     * 创建一个processor 通过id和connector
      *
-     * @param connector HttpConnector that owns this processor
-     * @param id Identifier of this HttpProcessor (unique per connector)
      */
     public HttpProcessor(HttpConnector connector, int id) {
 
@@ -61,7 +36,7 @@ final class HttpProcessor
         this.connector = connector;
         this.debug = connector.getDebug();
         this.id = id;
-        this.request = (MyHttpRequest) connector.createRequest();
+        this.request = (HttpRequestImpl) connector.createRequest();
         this.response = (HttpResponseImpl) connector.createResponse();
         this.serverPort = connector.getPort();
         this.threadName =
@@ -69,8 +44,6 @@ final class HttpProcessor
 
     }
 
-
-    // ----------------------------------------------------- Instance Variables
 
 
     /**
@@ -137,7 +110,7 @@ final class HttpProcessor
     /**
      * The HTTP request object we will pass to our associated container.
      */
-    private MyHttpRequest request = null;
+    private HttpRequestImpl request = null;
 
 
     /**
@@ -247,31 +220,8 @@ final class HttpProcessor
      */
     private int status = Constants.PROCESSOR_IDLE;
 
-
-    // --------------------------------------------------------- Public Methods
-
-
     /**
-     * Return a String value representing this object.
-     */
-    public String toString() {
-
-        return (this.threadName);
-
-    }
-
-
-    // -------------------------------------------------------- Package Methods
-
-
-    /**
-     * Process an incoming TCP/IP connection on the specified socket.  Any
-     * exception that occurs during processing must be logged and swallowed.
-     * <b>NOTE</b>:  This method is called from our Connector's thread.  We
-     * must assign it to our own thread so that multiple simultaneous
-     * requests can be handled.
-     *
-     * @param socket TCP socket to process
+     *  处理socket消息
      */
     synchronized void assign(Socket socket) {
 
@@ -293,14 +243,6 @@ final class HttpProcessor
 
     }
 
-
-    // -------------------------------------------------------- Private Methods
-
-
-    /**
-     * Await a newly assigned Socket from our Connector, or <code>null</code>
-     * if we are supposed to shut down.
-     */
     private synchronized Socket await() {
 
         // Wait for the Connector to provide a new Socket
@@ -311,25 +253,17 @@ final class HttpProcessor
             }
         }
 
-        // Notify the Connector that we have received this Socket
         Socket socket = this.socket;
         available = false;
         notifyAll();
-
         if ((debug >= 1) && (socket != null))
             log("  The incoming request has been awaited");
-
         return (socket);
 
     }
 
 
 
-    /**
-     * Log a message on the Logger associated with our Container (if any)
-     *
-     * @param message Message to be logged
-     */
     private void log(String message) {
 
         Logger logger = connector.getContainer().getLogger();
@@ -339,12 +273,7 @@ final class HttpProcessor
     }
 
 
-    /**
-     * Log a message on the Logger associated with our Container (if any)
-     *
-     * @param message Message to be logged
-     * @param throwable Associated exception
-     */
+
     private void log(String message, Throwable throwable) {
 
         Logger logger = connector.getContainer().getLogger();
@@ -467,45 +396,26 @@ final class HttpProcessor
 
 
     /**
-     * Parse and record the connection parameters related to this request.
-     *
-     * @param socket The socket on which we are connected
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a parsing error occurs
-     */
+     * 解析连接信息
+     **/
     private void parseConnection(Socket socket)
         throws IOException, ServletException {
 
         if (debug >= 2)
             log("  parseConnection: address=" + socket.getInetAddress() +
                 ", port=" + connector.getPort());
-        ((MyHttpRequest) request).setInet(socket.getInetAddress());
-        if (proxyPort != 0)
-            request.setServerPort(proxyPort);
-        else
-            request.setServerPort(serverPort);
+        ((HttpRequestImpl) request).setInet(socket.getInetAddress());
         request.setSocket(socket);
-
     }
 
 
     /**
-     * Parse the incoming HTTP request headers, and set the appropriate
-     * request headers.
-     *
-     * @param input The input stream connected to our socket
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a parsing error occurs
-     */
+     * 解析header
+     * */
     private void parseHeaders(SocketInputStream input)
         throws IOException, ServletException {
-
         while (true) {
-
             HttpHeader header = request.allocateHeader();
-
             // Read the next header
             input.readHeader(header);
             if (header.nameEnd == 0) {
@@ -564,24 +474,7 @@ final class HttpProcessor
                 request.setContentType(value);
             } else if (header.equals(DefaultHeaders.HOST_NAME)) {
                 int n = value.indexOf(':');
-                if (n < 0) {
-                    if (connector.getScheme().equals("http")) {
-                        request.setServerPort(80);
-                    } else if (connector.getScheme().equals("https")) {
-                        request.setServerPort(443);
-                    }
-                    if (proxyName != null)
-                        request.setServerName(proxyName);
-                    else
-                        request.setServerName(value);
-                } else {
-                    if (proxyName != null)
-                        request.setServerName(proxyName);
-                    else
-                        request.setServerName(value.substring(0, n).trim());
-                    if (proxyPort != 0)
-                        request.setServerPort(proxyPort);
-                    else {
+                if (n > 0) {
                         int port = 80;
                         try {
                             port =
@@ -744,8 +637,6 @@ final class HttpProcessor
         } else {
             ((HttpRequest) request).setRequestURI(uri);
         }
-        request.setSecure(connector.getSecure());
-        request.setScheme(connector.getScheme());
 
         if (normalizedUri == null) {
             log(" Invalid request URI: '" + uri + "'");
@@ -842,18 +733,6 @@ final class HttpProcessor
 
     }
 
-
-    /**
-     * Send a confirmation that a request has been processed when pipelining.
-     * HTTP/1.1 100 Continue is sent back to the client.
-     *
-     * @param output Socket output stream
-     */
-    private void ackRequest(OutputStream output)
-        throws IOException {
-        if (sendAck)
-            output.write(ack);
-    }
 
 
     /**
@@ -1044,19 +923,16 @@ final class HttpProcessor
 
 
     /**
-     * The background thread that listens for incoming TCP/IP connections and
-     * hands them off to an appropriate processor.
+     * 处理socket重要的后台线程，初始化的时候被启动
      */
     public void run() {
 
-        // Process requests until we receive a shutdown signal
+        //当接受到停止的时候才停止
         while (!stopped) {
-
             // 等待被调用asign方法时唤醒
             Socket socket = await();
             if (socket == null)
                 continue;
-
             // 从socket中处理信息
             try {
                 process(socket);
@@ -1064,7 +940,7 @@ final class HttpProcessor
                 log("process.invoke", t);
             }
 
-            // 完成后自动压入栈中
+            // 完成后自动压入栈中，用于回收
             connector.recycle(this);
 
         }
@@ -1078,16 +954,14 @@ final class HttpProcessor
 
 
     /**
-     * Start the background processing thread.
+     * 启动后台处理线程
      */
     private void threadStart() {
-
         log(sm.getString("httpProcessor.starting"));
 
         thread = new Thread(this, threadName);
         thread.setDaemon(true);
         thread.start();
-
         if (debug >= 1)
             log(" Background thread has been started");
 
@@ -1095,7 +969,7 @@ final class HttpProcessor
 
 
     /**
-     * Stop the background processing thread.
+     *  停止线程
      */
     private void threadStop() {
 
@@ -1122,22 +996,15 @@ final class HttpProcessor
     // ------------------------------------------------------ Lifecycle Methods
 
 
-    /**
-     * Add a lifecycle event listener to this component.
-     *
-     * @param listener The listener to add
-     */
+
+
+
     public void addLifecycleListener(LifecycleListener listener) {
 
         lifecycle.addLifecycleListener(listener);
 
     }
 
-
-    /**
-     * Get the lifecycle listeners associated with this lifecycle. If this
-     * Lifecycle has no listeners registered, a zero-length array is returned.
-     */
     public LifecycleListener[] findLifecycleListeners() {
 
         return lifecycle.findLifecycleListeners();
@@ -1145,11 +1012,6 @@ final class HttpProcessor
     }
 
 
-    /**
-     * Remove a lifecycle event listener from this component.
-     *
-     * @param listener The listener to add
-     */
     public void removeLifecycleListener(LifecycleListener listener) {
 
         lifecycle.removeLifecycleListener(listener);
@@ -1157,11 +1019,6 @@ final class HttpProcessor
     }
 
 
-    /**
-     * Start the background thread we will use for request processing.
-     *
-     * @exception LifecycleException if a fatal startup error occurs
-     */
     public void start() throws LifecycleException {
 
         if (started)
@@ -1169,17 +1026,10 @@ final class HttpProcessor
                 (sm.getString("httpProcessor.alreadyStarted"));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
-
         threadStart();
 
     }
 
-
-    /**
-     * Stop the background thread we will use for request processing.
-     *
-     * @exception LifecycleException if a fatal shutdown error occurs
-     */
     public void stop() throws LifecycleException {
 
         if (!started)

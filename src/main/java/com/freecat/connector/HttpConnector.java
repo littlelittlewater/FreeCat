@@ -1,10 +1,5 @@
 package com.freecat.connector;
 
-
-
-
-
-
 import com.freecat.container.Container;
 import com.freecat.container.Service;
 import com.freecat.lifecycle.Lifecycle;
@@ -15,6 +10,7 @@ import com.freecat.net.ServerSocketFactory;
 import com.freecat.util.LifecycleSupport;
 import com.freecat.util.Logger;
 import com.freecat.util.StringManager;
+
 import java.io.IOException;
 import java.net.BindException;
 import java.net.InetAddress;
@@ -27,13 +23,12 @@ import java.util.Vector;
 
 
 /**
- * 连接器 处理连接
+ * 默认的连接器  用于处理连接
+ * 1.初始化方法init--->会获取相关的socket
+ * 2.启动方法start--->开启自己的线程来接受消息，并传递给processor的asign方法
  */
 public final class HttpConnector
         implements Connector, Lifecycle, Runnable {
-
-
-    // ----------------------------------------------------- Instance Variables
 
 
     /**
@@ -49,20 +44,19 @@ public final class HttpConnector
 
 
     /**
-     *
      * 绑定的ip地址
      */
     private String address = null;
 
 
     /**
-     *  输入流的输入缓存
+     * 输入流的输入缓存
      */
     private int bufferSize = 2048;
 
 
     /**
-     *  用来处理请求的容器
+     * 用来处理请求的容器
      */
     protected Container container = null;
 
@@ -86,26 +80,13 @@ public final class HttpConnector
 
 
     /**
-     * The "enable DNS lookups" flag for this Connector.
-     */
-    private boolean enableLookups = false;
-
-
-    /**
      * The server socket factory for this component.
      */
     private ServerSocketFactory factory = null;
 
 
     /**
-     * Descriptive information about this Connector implementation.
-     */
-    private static final String info =
-            "org.apache.catalina.connector.http.HttpConnector/1.0";
-
-
-    /**
-     * T这个容器的生命周期致辞
+     * 这个容器的生命周期支持
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 
@@ -123,7 +104,7 @@ public final class HttpConnector
 
 
     /**
-     * Timeout的默认时长
+     * 连接超时的默认时长
      */
     private int connectionTimeout = Constants.DEFAULT_CONNECTION_TIMEOUT;
 
@@ -140,21 +121,6 @@ public final class HttpConnector
     private Stack processors = new Stack();
 
 
-
-    /**
-     * The request scheme that will be set on all requests received
-     * through this connector.
-     */
-    private String scheme = "http";
-
-
-    /**
-     * The secure connection flag that will be set on all requests received
-     * through this connector.
-     */
-    private boolean secure = false;
-
-
     /**
      * 监听的连接
      */
@@ -162,7 +128,7 @@ public final class HttpConnector
 
 
     /**
-     * The string manager for this package.
+     * 日志记录器
      */
     private StringManager sm =
             StringManager.getManager(Constants.Package);
@@ -181,7 +147,7 @@ public final class HttpConnector
 
 
     /**
-     *  停止后台进程的标记
+     * 停止后台进程的标记
      */
     private boolean stopped = false;
 
@@ -199,7 +165,7 @@ public final class HttpConnector
 
 
     /**
-     * The thread synchronization object.
+     * 容器同步对象
      */
     private Object threadSync = new Object();
 
@@ -208,15 +174,6 @@ public final class HttpConnector
      * Is chunking allowed ?
      */
     private boolean allowChunking = true;
-
-
-    /**
-     * Use TCP no delay ?
-     */
-    private boolean tcpNoDelay = true;
-
-
-    // ------------------------------------------------------------- Properties
 
 
     /**
@@ -252,9 +209,7 @@ public final class HttpConnector
 
 
     /**
-     * Set the connection timeout for this Connector.
-     *
-     * @param count The new connection timeout
+     * 设置timeout时长
      */
     public void setConnectionTimeout(int connectionTimeout) {
 
@@ -372,8 +327,7 @@ public final class HttpConnector
 
 
     /**
-     * Return the Container used for processing requests received by this
-     * Connector.
+     * 返回处理这些请求的Container
      */
     public Container getContainer() {
 
@@ -383,10 +337,7 @@ public final class HttpConnector
 
 
     /**
-     * Set the Container used for processing requests received by this
-     * Connector.
-     *
-     * @param container The new Container to use
+     * 设置处理这些请求的Container
      */
     public void setContainer(Container container) {
 
@@ -396,7 +347,7 @@ public final class HttpConnector
 
 
     /**
-     * Return the current number of processors that have been created.
+     * 设置现在生成的线程数
      */
     public int getCurProcessors() {
 
@@ -406,7 +357,7 @@ public final class HttpConnector
 
 
     /**
-     * Return the debugging detail level for this component.
+     * 返回当前的debug等级
      */
     public int getDebug() {
 
@@ -416,35 +367,11 @@ public final class HttpConnector
 
 
     /**
-     * Set the debugging detail level for this component.
-     *
-     * @param debug The new debugging detail level
+     * 设置denbug等级
      */
     public void setDebug(int debug) {
 
         this.debug = debug;
-
-    }
-
-
-    /**
-     * Return the "enable DNS lookups" flag.
-     */
-    public boolean getEnableLookups() {
-
-        return (this.enableLookups);
-
-    }
-
-
-    /**
-     * Set the "enable DNS lookups" flag.
-     *
-     * @param enableLookups The new "enable DNS lookups" flag value
-     */
-    public void setEnableLookups(boolean enableLookups) {
-
-        this.enableLookups = enableLookups;
 
     }
 
@@ -465,9 +392,7 @@ public final class HttpConnector
 
 
     /**
-     * Set the server socket factory used by this Container.
-     *
-     * @param factory The new server socket factory
+     * 设置容器使用socket工厂
      */
     public void setFactory(ServerSocketFactory factory) {
 
@@ -477,17 +402,7 @@ public final class HttpConnector
 
 
     /**
-     * Return descriptive information about this Connector implementation.
-     */
-    public String getInfo() {
-
-        return (info);
-
-    }
-
-
-    /**
-     * Return the minimum number of processors to start at initialization.
+     * 获取最小的处理线程数目
      */
     public int getMinProcessors() {
 
@@ -497,12 +412,9 @@ public final class HttpConnector
 
 
     /**
-     * Set the minimum number of processors to start at initialization.
-     *
-     * @param minProcessors The new minimum processors
+     * 获取最小的处理线程数目
      */
     public void setMinProcessors(int minProcessors) {
-
         this.minProcessors = minProcessors;
 
     }
@@ -541,93 +453,13 @@ public final class HttpConnector
 
 
     /**
-     * Set the port number on which we listen for HTTP requests.
-     *
-     * @param port The new port number
+     * 设置监听端口号
      */
     public void setPort(int port) {
 
         this.port = port;
 
     }
-
-
-
-
-
-
-    /**
-     * Return the scheme that will be assigned to requests received
-     * through this connector.  Default value is "http".
-     */
-    public String getScheme() {
-
-        return (this.scheme);
-
-    }
-
-
-    /**
-     * Set the scheme that will be assigned to requests received through
-     * this connector.
-     *
-     * @param scheme The new scheme
-     */
-    public void setScheme(String scheme) {
-
-        this.scheme = scheme;
-
-    }
-
-
-    /**
-     * Return the secure connection flag that will be assigned to requests
-     * received through this connector.  Default value is "false".
-     */
-    public boolean getSecure() {
-
-        return (this.secure);
-
-    }
-
-
-    /**
-     * Set the secure connection flag that will be assigned to requests
-     * received through this connector.
-     *
-     * @param secure The new secure connection flag
-     */
-    public void setSecure(boolean secure) {
-
-        this.secure = secure;
-
-    }
-
-
-    /**
-     * Return the TCP no delay flag value.
-     */
-    public boolean getTcpNoDelay() {
-
-        return (this.tcpNoDelay);
-
-    }
-
-
-    /**
-     * Set the TCP no delay flag which will be set on the socket after
-     * accepting a connection.
-     *
-     * @param tcpNoDelay The new TCP no delay flag
-     */
-    public void setTcpNoDelay(boolean tcpNoDelay) {
-
-        this.tcpNoDelay = tcpNoDelay;
-
-    }
-
-
-    // --------------------------------------------------------- Public Methods
 
 
     /**
@@ -735,7 +567,7 @@ public final class HttpConnector
     /**
      * Log a message on the Logger associated with our Container (if any).
      *
-     * @param message Message to be logged
+     * @param message   Message to be logged
      * @param throwable Associated exception
      */
     private void log(String message, Throwable throwable) {
@@ -779,6 +611,7 @@ public final class HttpConnector
 
     /**
      * 初始化化监听的socket
+     *
      * @return
      * @throws IOException
      * @throws KeyStoreException
@@ -790,8 +623,7 @@ public final class HttpConnector
     private ServerSocket open()
             throws IOException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, UnrecoverableKeyException,
-            KeyManagementException
-    {
+            KeyManagementException {
 
         //获取factory
         ServerSocketFactory factory = getFactory();
@@ -832,31 +664,29 @@ public final class HttpConnector
 
 
     /**
-     * The background thread that listens for incoming TCP/IP connections and
-     * hands them off to an appropriate processor.
+     * 后台进程用于监听socke
      */
     public void run() {
-        // Loop until we receive a shutdown command
+        //一直循环 直到收到停止命令为止
         while (!stopped) {
-            // Accept the next incoming connection from the server socket
+            // 接受将要来到的连接
             Socket socket = null;
             try {
-                //                if (debug >= 3)
-                //                    log("run: Waiting on serverSocket.accept()");
+                if (debug >= 3)
+                    log("等待连接 serverSocket.accept()");
                 socket = serverSocket.accept();
-                //                if (debug >= 3)
-                //                    log("run: Returned from serverSocket.accept()");
+                if (debug >= 3)
+                    log("接受连接 serverSocket.accept()");
                 if (connectionTimeout > 0)
                     socket.setSoTimeout(connectionTimeout);
-                socket.setTcpNoDelay(tcpNoDelay);
             } catch (AccessControlException ace) {
                 log("socket accept security exception", ace);
                 continue;
             } catch (IOException e) {
-                //                if (debug >= 3)
-                //                    log("run: Accept returned IOException", e);
+                if (debug >= 3)
+                    log("run: Accept returned IOException", e);
                 try {
-                    // If reopening fails, exit
+                    //如果开启socket失败 就再开一个
                     synchronized (threadSync) {
                         if (started && !stopped)
                             log("accept error: ", e);
@@ -894,7 +724,7 @@ public final class HttpConnector
                 continue;
             }
 
-            // Hand this socket off to an appropriate processor
+            // 创建一个processor来处理消息
             HttpProcessor processor = createProcessor();
             if (processor == null) {
                 try {
@@ -905,16 +735,16 @@ public final class HttpConnector
                 }
                 continue;
             }
-            //            if (debug >= 3)
-            //                log("run: Assigning socket to processor " + processor);
+            if (debug >= 3)
+                log("run: Assigning socket to processor " + processor);
 
             processor.assign(socket);
 
         }
 
         // Notify the threadStop() method that we have shut ourselves down
-        //        if (debug >= 3)
-        //            log("run: Notifying threadStop() that we have shut down");
+        if (debug >= 3)
+            log("run: Notifying threadStop() that we have shut down");
         synchronized (threadSync) {
             threadSync.notifyAll();
         }
@@ -998,10 +828,10 @@ public final class HttpConnector
     public void initialize()
             throws LifecycleException {
         if (initialized)
-            throw new LifecycleException (
+            throw new LifecycleException(
                     sm.getString("连接器已经被初始化！"));
 
-        this.initialized=true;
+        this.initialized = true;
         Exception eRethrow = null;
 
         //建立一个socket连接
@@ -1027,7 +857,7 @@ public final class HttpConnector
             eRethrow = kme;
         }
 
-        if ( eRethrow != null )
+        if (eRethrow != null)
             throw new LifecycleException(threadName + ".open", eRethrow);
 
     }
@@ -1036,7 +866,7 @@ public final class HttpConnector
     /**
      * 开始处理连接器的请求
      *
-     * @exception LifecycleException if a fatal startup error occurs
+     * @throws LifecycleException if a fatal startup error occurs
      */
     public void start() throws LifecycleException {
 
@@ -1065,7 +895,7 @@ public final class HttpConnector
     /**
      * Terminate processing requests via this Connector.
      *
-     * @exception LifecycleException if a fatal shutdown error occurs
+     * @throws LifecycleException if a fatal shutdown error occurs
      */
     public void stop() throws LifecycleException {
 

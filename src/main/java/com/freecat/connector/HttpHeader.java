@@ -3,10 +3,6 @@ package com.freecat.connector;
 
 /**
  * HTTP header enum type.
- *
- * @author Remy Maucherat
- * @version $Revision: 1.4 $ $Date: 2002/03/18 07:15:40 $
- * @deprecated
  */
 
 public final class HttpHeader {
@@ -216,11 +212,6 @@ public final class HttpHeader {
 
     // --------------------------------------------------------- Object Methods
 
-
-    /**
-     * Return hash code. The hash code of the HttpHeader object is the same
-     * as returned by new String(name, 0, nameEnd).hashCode().
-     */
     public int hashCode() {
         int h = hashCode;
         if (h == 0) {

@@ -5,7 +5,7 @@ import com.freecat.container.Service;
 import com.freecat.lifecycle.LifecycleException;
 import com.freecat.net.ServerSocketFactory;
 
-//连接器的借口 用于连接用户的请求
+//连接器的接口 用于连接用户的请求
 public interface Connector {
 
     //获取container
@@ -16,50 +16,15 @@ public interface Connector {
 
 
     /**
-     * Return the server socket factory used by this Container.
+     * 获取socket接口的工程
      */
-    public com.freecat.net.ServerSocketFactory getFactory();
+    public ServerSocketFactory getFactory();
 
 
     /**
-     * Set the server socket factory used by this Container.
-     *
-     * @param factory The new server socket factory
+     * 设置socketFactory
      */
     public void setFactory(ServerSocketFactory factory);
-
-    //获取连接器的信息
-    String getInfo();
-
-
-    /**
-     * Return the port number to which a request should be redirected if
-     * it comes in on a non-SSL port and is subject to a security constraint
-     * with a transport guarantee that requires SSL.
-     */
-
-    //http 类型请求
-    String getScheme();
-
-
-    //连接器处理的请求类型
-    void setScheme(String scheme);
-
-
-    /**
-     * Return the secure connection flag that will be assigned to requests
-     * received through this connector.  Default value is "false".
-     */
-    public boolean getSecure();
-
-
-    /**
-     * Set the secure connection flag that will be assigned to requests
-     * received through this connector.
-     *
-     * @param secure The new secure connection flag
-     */
-    public void setSecure(boolean secure);
 
 
     /**
@@ -69,9 +34,7 @@ public interface Connector {
 
 
     /**
-     * Set the <code>Service</code> with which we are associated (if any).
-     *
-     * @param service The service that owns this Engine
+     * 设置相关的servic
      */
     public void setService(Service service);
 

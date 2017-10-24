@@ -1,6 +1,7 @@
 package com.freecat.connector;
 
-import org.apache.catalina.util.StringManager;
+
+import com.freecat.util.StringManager;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -281,14 +282,7 @@ public class SocketInputStream extends InputStream {
 
 
     /**
-     * Read a header, and copies it to the given buffer. This
-     * function is meant to be used during the HTTP request header parsing.
-     * Do NOT attempt to read the request body using it.
-     *
-     * @param requestLine Request line object
-     * @throws IOException If an exception occurs during the underlying socket
-     * read operations, or if the given buffer is not big enough to accomodate
-     * the whole line.
+     * 读取header
      */
     public void readHeader(HttpHeader header)
         throws IOException {

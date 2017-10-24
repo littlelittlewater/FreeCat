@@ -66,6 +66,7 @@ package com.freecat.connector;
 
 
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;

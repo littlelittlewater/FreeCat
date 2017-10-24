@@ -65,6 +65,8 @@
 package com.freecat.connector;
 
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;

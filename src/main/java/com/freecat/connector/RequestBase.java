@@ -2,6 +2,7 @@ package com.freecat.connector;
 
 import com.freecat.container.Context;
 import com.freecat.container.Wrapper;
+import com.freecat.util.Enumerator;
 import com.freecat.util.RequestUtil;
 import com.freecat.util.StringManager;
 
@@ -21,7 +22,6 @@ import java.util.*;
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.21 $ $Date: 2002/08/26 12:15:58 $
- * @deprecated
  */
 
 public abstract class RequestBase
@@ -560,92 +560,6 @@ public abstract class RequestBase
 
     }
 
-
-    /**
-     * Set the protocol name and version associated with this Request.
-     *
-     * @param protocol Protocol name and version
-     */
-    public void setProtocol(String protocol) {
-
-        this.protocol = protocol;
-
-    }
-
-
-    /**
-     * Set the IP address of the remote client associated with this Request.
-     *
-     * @param remoteAddr The remote IP address
-     */
-    public void setRemoteAddr(String remoteAddr) {
-
-        this.remoteAddr = remoteAddr;
-
-    }
-
-
-    /**
-     * Set the fully qualified name of the remote client associated with this
-     * Request.
-     *
-     * @param remoteHost The remote host name
-     */
-    public void setRemoteHost(String remoteHost) {
-
-        this.remoteHost = remoteHost;
-
-    }
-
-
-    /**
-     * Set the name of the scheme associated with this request.  Typical values
-     * are <code>http</code>, <code>https</code>, and <code>ftp</code>.
-     *
-     * @param scheme The scheme
-     */
-    public void setScheme(String scheme) {
-
-        this.scheme = scheme;
-
-    }
-
-
-    /**
-     * Set the value to be returned by <code>isSecure()</code>
-     * for this Request.
-     *
-     * @param secure The new isSecure value
-     */
-    public void setSecure(boolean secure) {
-
-        this.secure = secure;
-
-    }
-
-
-    /**
-     * Set the name of the server (virtual host) to process this request.
-     *
-     * @param name The server name
-     */
-    public void setServerName(String name) {
-
-        this.serverName = name;
-
-    }
-
-
-    /**
-     * Set the port number of the server to process this request.
-     *
-     * @param port The server port
-     */
-    public void setServerPort(int port) {
-
-        this.serverPort = port;
-
-    }
 
 
     // ------------------------------------------------- ServletRequest Methods

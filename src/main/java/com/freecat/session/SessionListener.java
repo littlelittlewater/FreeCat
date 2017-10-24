@@ -1,13 +1,13 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/HttpResponse.java,v 1.5 2001/07/22 20:13:30 pier Exp $
- * $Revision: 1.5 $
- * $Date: 2001/07/22 20:13:30 $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/SessionListener.java,v 1.1 2001/07/29 03:43:54 craigmcc Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/07/29 03:43:54 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,79 +62,26 @@
  */
 
 
-package com.freecat.connector;
+package com.freecat.session;
 
-
-import javax.servlet.http.Cookie;
 
 
 /**
- * FreeCat的包装类
+ * Interface defining a listener for significant Session generated events.
+ *
+ * @author Craig R. McClanahan
+ * @version $Revision: 1.1 $ $Date: 2001/07/29 03:43:54 $
  */
 
-public interface HttpResponse
-    extends Response {
-
-
-    // --------------------------------------------------------- Public Methods
+public interface SessionListener {
 
 
     /**
-     * Return an array of all cookies set for this response, or
-     * a zero-length array if no cookies have been set.
-     */
-    public Cookie[] getCookies();
-
-
-    /**
-     * Return the value for the specified header, or <code>null</code> if this
-     * header has not been set.  If more than one value was added for this
-     * name, only the first is returned; use getHeaderValues() to retrieve all
-     * of them.
+     * Acknowledge the occurrence of the specified event.
      *
-     * @param name Header name to look up
+     * @param event SessionEvent that has occurred
      */
-    public String getHeader(String name);
-
-
-    /**
-     * Return an array of all the header names set for this response, or
-     * a zero-length array if no headers have been set.
-     */
-    public String[] getHeaderNames();
-
-
-    /**
-     * Return an array of all the header values associated with the
-     * specified header name, or an zero-length array if there are no such
-     * header values.
-     *
-     * @param name Header name to look up
-     */
-    public String[] getHeaderValues(String name);
-
-
-    /**
-     * Return the error message that was set with <code>sendError()</code>
-     * for this Response.
-     */
-    public String getMessage();
-
-
-    /**
-     * Return the HTTP status code associated with this Response.
-     */
-    public int getStatus();
-
-
-    /**
-     * Reset this response, and specify the values for the HTTP status code
-     * and corresponding message.
-     *
-     * @exception IllegalStateException if this response has already been
-     *  committed
-     */
-    public void reset(int status, String message);
+    public void sessionEvent(SessionEvent event);
 
 
 }

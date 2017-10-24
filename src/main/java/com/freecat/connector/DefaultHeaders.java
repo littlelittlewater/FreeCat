@@ -5,8 +5,6 @@ package com.freecat.connector;
  * HTTP default headers and header names.
  *
  * @author Remy Maucherat
- * @version $Revision: 1.3 $ $Date: 2002/03/18 07:15:39 $
- * @deprecated
  */
 
 final class DefaultHeaders {

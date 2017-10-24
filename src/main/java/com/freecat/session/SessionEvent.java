@@ -1,13 +1,13 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/HttpResponse.java,v 1.5 2001/07/22 20:13:30 pier Exp $
- * $Revision: 1.5 $
- * $Date: 2001/07/22 20:13:30 $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/SessionEvent.java,v 1.1 2001/07/29 03:43:54 craigmcc Exp $
+ * $Revision: 1.1 $
+ * $Date: 2001/07/29 03:43:54 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,79 +62,97 @@
  */
 
 
-package com.freecat.connector;
+package com.freecat.session;
 
 
-import javax.servlet.http.Cookie;
+import java.util.EventObject;
 
 
 /**
- * FreeCat的包装类
+ * General event for notifying listeners of significant changes on a Session.
+ *
+ * @author Craig R. McClanahan
+ * @version $Revision: 1.1 $ $Date: 2001/07/29 03:43:54 $
  */
 
-public interface HttpResponse
-    extends Response {
-
-
-    // --------------------------------------------------------- Public Methods
+public final class SessionEvent
+    extends EventObject {
 
 
     /**
-     * Return an array of all cookies set for this response, or
-     * a zero-length array if no cookies have been set.
+     * The event data associated with this event.
      */
-    public Cookie[] getCookies();
+    private Object data = null;
 
 
     /**
-     * Return the value for the specified header, or <code>null</code> if this
-     * header has not been set.  If more than one value was added for this
-     * name, only the first is returned; use getHeaderValues() to retrieve all
-     * of them.
+     * The Session on which this event occurred.
+     */
+    private Session session = null;
+
+
+    /**
+     * The event type this instance represents.
+     */
+    private String type = null;
+
+
+    /**
+     * Construct a new SessionEvent with the specified parameters.
      *
-     * @param name Header name to look up
+     * @param session Session on which this event occurred
+     * @param type Event type
+     * @param data Event data
      */
-    public String getHeader(String name);
+    public SessionEvent(Session session, String type, Object data) {
+
+        super(session);
+        this.session = session;
+        this.type = type;
+        this.data = data;
+
+    }
 
 
     /**
-     * Return an array of all the header names set for this response, or
-     * a zero-length array if no headers have been set.
+     * Return the event data of this event.
      */
-    public String[] getHeaderNames();
+    public Object getData() {
+
+        return (this.data);
+
+    }
 
 
     /**
-     * Return an array of all the header values associated with the
-     * specified header name, or an zero-length array if there are no such
-     * header values.
-     *
-     * @param name Header name to look up
+     * Return the Session on which this event occurred.
      */
-    public String[] getHeaderValues(String name);
+    public Session getSession() {
+
+        return (this.session);
+
+    }
 
 
     /**
-     * Return the error message that was set with <code>sendError()</code>
-     * for this Response.
+     * Return the event type of this event.
      */
-    public String getMessage();
+    public String getType() {
+
+        return (this.type);
+
+    }
 
 
     /**
-     * Return the HTTP status code associated with this Response.
+     * Return a string representation of this event.
      */
-    public int getStatus();
+    public String toString() {
 
+        return ("SessionEvent['" + getSession() + "','" +
+                getType() + "']");
 
-    /**
-     * Reset this response, and specify the values for the HTTP status code
-     * and corresponding message.
-     *
-     * @exception IllegalStateException if this response has already been
-     *  committed
-     */
-    public void reset(int status, String message);
+    }
 
 
 }

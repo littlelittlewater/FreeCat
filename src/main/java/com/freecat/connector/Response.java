@@ -22,8 +22,6 @@ import java.io.PrintWriter;
 public interface Response {
 
 
-    // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the Connector through which this Response is returned.

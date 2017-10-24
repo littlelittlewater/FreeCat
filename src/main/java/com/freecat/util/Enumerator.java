@@ -1,7 +1,7 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/HttpResponse.java,v 1.5 2001/07/22 20:13:30 pier Exp $
- * $Revision: 1.5 $
- * $Date: 2001/07/22 20:13:30 $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/util/Enumerator.java,v 1.2 2001/07/22 20:25:13 pier Exp $
+ * $Revision: 1.2 $
+ * $Date: 2001/07/22 20:25:13 $
  *
  * ====================================================================
  *
@@ -62,79 +62,106 @@
  */
 
 
-package com.freecat.connector;
+package com.freecat.util;
 
 
-import javax.servlet.http.Cookie;
+import java.util.*;
 
 
 /**
- * FreeCat的包装类
+ * Adapter class that wraps an <code>Enumeration</code> around a Java2
+ * collection classes object <code>Iterator</code> so that existing APIs
+ * returning Enumerations can easily run on top of the new collections.
+ * Constructors are provided to easliy create such wrappers.
+ *
+ * @author Craig R. McClanahan
+ * @version $Revision: 1.2 $ $Date: 2001/07/22 20:25:13 $
  */
 
-public interface HttpResponse
-    extends Response {
+public final class Enumerator implements Enumeration {
+
+
+    // ----------------------------------------------------------- Constructors
+
+
+    /**
+     * Return an Enumeration over the values of the specified Collection.
+     *
+     * @param collection Collection whose values should be enumerated
+     */
+    public Enumerator(Collection collection) {
+
+        this(collection.iterator());
+
+    }
+
+
+    /**
+     * Return an Enumeration over the values returned by the
+     * specified Iterator.
+     *
+     * @param iterator Iterator to be wrapped
+     */
+    public Enumerator(Iterator iterator) {
+
+        super();
+        this.iterator = iterator;
+
+    }
+
+
+    /**
+     * Return an Enumeration over the values of the specified Map.
+     *
+     * @param map Map whose values should be enumerated
+     */
+    public Enumerator(Map map) {
+
+        this(map.values().iterator());
+
+    }
+
+
+    // ----------------------------------------------------- Instance Variables
+
+
+    /**
+     * The <code>Iterator</code> over which the <code>Enumeration</code>
+     * represented by this class actually operates.
+     */
+    private Iterator iterator = null;
 
 
     // --------------------------------------------------------- Public Methods
 
 
     /**
-     * Return an array of all cookies set for this response, or
-     * a zero-length array if no cookies have been set.
-     */
-    public Cookie[] getCookies();
-
-
-    /**
-     * Return the value for the specified header, or <code>null</code> if this
-     * header has not been set.  If more than one value was added for this
-     * name, only the first is returned; use getHeaderValues() to retrieve all
-     * of them.
+     * Tests if this enumeration contains more elements.
      *
-     * @param name Header name to look up
+     * @return <code>true</code> if and only if this enumeration object
+     *  contains at least one more element to provide, <code>false</code>
+     *  otherwise
      */
-    public String getHeader(String name);
+    public boolean hasMoreElements() {
+
+        return (iterator.hasNext());
+
+    }
 
 
     /**
-     * Return an array of all the header names set for this response, or
-     * a zero-length array if no headers have been set.
-     */
-    public String[] getHeaderNames();
-
-
-    /**
-     * Return an array of all the header values associated with the
-     * specified header name, or an zero-length array if there are no such
-     * header values.
+     * Returns the next element of this enumeration if this enumeration
+     * has at least one more element to provide.
      *
-     * @param name Header name to look up
-     */
-    public String[] getHeaderValues(String name);
-
-
-    /**
-     * Return the error message that was set with <code>sendError()</code>
-     * for this Response.
-     */
-    public String getMessage();
-
-
-    /**
-     * Return the HTTP status code associated with this Response.
-     */
-    public int getStatus();
-
-
-    /**
-     * Reset this response, and specify the values for the HTTP status code
-     * and corresponding message.
+     * @return the next element of this enumeration
      *
-     * @exception IllegalStateException if this response has already been
-     *  committed
+     * @exception NoSuchElementException if no more elements exist
      */
-    public void reset(int status, String message);
+    public Object nextElement() throws NoSuchElementException {
+
+        return (iterator.next());
+
+    }
 
 
 }

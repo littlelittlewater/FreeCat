@@ -87,61 +87,17 @@ import java.util.Iterator;
 
 public interface Request {
 
-
-    // ------------------------------------------------------------- Properties
-
-
-    /**
-     * Return the authorization credentials sent with this request.
-     */
-    public String getAuthorization();
-
-
-    /**
-     * Set the authorization credentials sent with this request.
-     *
-     * @param authorization The new authorization credentials
-     */
-    public void setAuthorization(String authorization);
-
-
-    /**
-     * Return the Connector through which this Request was received.
-     */
+    //获取当前的connector
     public Connector getConnector();
 
-
-    /**
-     * Set the Connector through which this Request was received.
-     *
-     * @param connector The new connector
-     */
+    //设置多个connector
     public void setConnector(Connector connector);
 
 
-    /**
-     * Return the Context within which this Request is being processed.
-     */
     public Context getContext();
 
 
-    /**
-     * Set the Context within which this Request is being processed.  This
-     * must be called as soon as the appropriate Context is identified, because
-     * it identifies the value to be returned by <code>getContextPath()</code>,
-     * and thus enables parsing of the request URI.
-     *
-     * @param context The newly associated Context
-     */
     public void setContext(Context context);
-
-
-    /**
-     * Return descriptive information about this Request implementation and
-     * the corresponding version number, in the format
-     * <code>&lt;description&gt;/&lt;version&gt;</code>.
-     */
-    public String getInfo();
 
 
     /**
@@ -291,58 +247,6 @@ public interface Request {
      * @param value Object to be bound to the specified name
      */
     public void setNote(String name, Object value);
-
-
-    /**
-     * Set the protocol name and version associated with this Request.
-     *
-     * @param protocol Protocol name and version
-     */
-    public void setProtocol(String protocol);
-
-
-    /**
-     * Set the remote IP address associated with this Request.  NOTE:  This
-     * value will be used to resolve the value for <code>getRemoteHost()</code>
-     * if that method is called.
-     *
-     * @param remote The remote IP address
-     */
-    public void setRemoteAddr(String remote);
-
-
-    /**
-     * Set the name of the scheme associated with this request.  Typical values
-     * are <code>http</code>, <code>https</code>, and <code>ftp</code>.
-     *
-     * @param scheme The scheme
-     */
-    public void setScheme(String scheme);
-
-
-    /**
-     * Set the value to be returned by <code>isSecure()</code>
-     * for this Request.
-     *
-     * @param secure The new isSecure value
-     */
-    public void setSecure(boolean secure);
-
-
-    /**
-     * Set the name of the server (virtual host) to process this request.
-     *
-     * @param name The server name
-     */
-    public void setServerName(String name);
-
-
-    /**
-     * Set the port number of the server to process this request.
-     *
-     * @param port The server port
-     */
-    public void setServerPort(int port);
 
 
 }

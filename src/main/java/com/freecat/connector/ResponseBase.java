@@ -1,10 +1,11 @@
 package com.freecat.connector;
 
 
-import org.apache.catalina.Context;
-import org.apache.catalina.util.CharsetMapper;
-import org.apache.catalina.util.RequestUtil;
-import org.apache.catalina.util.StringManager;
+
+import com.freecat.container.Context;
+import com.freecat.util.CharsetMapper;
+import com.freecat.util.RequestUtil;
+import com.freecat.util.StringManager;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;

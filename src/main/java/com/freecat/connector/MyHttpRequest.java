@@ -28,8 +28,13 @@ public class MyHttpRequest implements HttpRequest, HttpServletRequest {
     //局部变量  加锁的一个安全变量  这个锁只能用来拍错 不能用于程序判定
     protected ParameterMap parameters = null;
 
+    protected String contextPath = "";
 
     private String authType;
+
+    private String method = null;
+
+    private String queryString = null;
 
     //添加一个cookie
     public void addCookie(Cookie cookie) {
@@ -98,15 +103,18 @@ public class MyHttpRequest implements HttpRequest, HttpServletRequest {
     }
 
     public void setContextPath(String path) {
-
+        if (path == null)
+            this.contextPath = "";
+        else
+            this.contextPath = path;
     }
 
     public void setMethod(String method) {
-
+        this.method = method;
     }
 
     public void setQueryString(String query) {
-
+        this.queryString = query;
     }
 
     public void setPathInfo(String path) {

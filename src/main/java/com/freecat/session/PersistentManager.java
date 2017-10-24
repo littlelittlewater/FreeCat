@@ -1,7 +1,7 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/HttpResponse.java,v 1.5 2001/07/22 20:13:30 pier Exp $
- * $Revision: 1.5 $
- * $Date: 2001/07/22 20:13:30 $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/session/PersistentManager.java,v 1.10 2001/07/22 20:25:12 pier Exp $
+ * $Revision: 1.10 $
+ * $Date: 2001/07/22 20:25:12 $
  *
  * ====================================================================
  *
@@ -62,79 +62,62 @@
  */
 
 
-package com.freecat.connector;
-
-
-import javax.servlet.http.Cookie;
-
+package com.freecat.session;
 
 /**
- * FreeCat的包装类
+ * Implementation of the <b>Manager</b> interface that makes use of
+ * a Store to swap active Sessions to disk. It can be configured to
+ * achieve several different goals:
+ *
+ * <li>Persist sessions across restarts of the Container</li>
+ * <li>Fault tolerance, keep sessions backed up on disk to allow
+ *     recovery in the event of unplanned restarts.</li>
+ * <li>Limit the number of active sessions kept in memory by
+ *     swapping less active sessions out to disk.</li>
+ *
+ * @version $Revision: 1.10 $
+ * @author Kief Morris (kief@kief.com)
  */
 
-public interface HttpResponse
-    extends Response {
+public final class PersistentManager extends PersistentManagerBase {
 
 
-    // --------------------------------------------------------- Public Methods
-
-
-    /**
-     * Return an array of all cookies set for this response, or
-     * a zero-length array if no cookies have been set.
-     */
-    public Cookie[] getCookies();
+    // ----------------------------------------------------- Instance Variables
 
 
     /**
-     * Return the value for the specified header, or <code>null</code> if this
-     * header has not been set.  If more than one value was added for this
-     * name, only the first is returned; use getHeaderValues() to retrieve all
-     * of them.
-     *
-     * @param name Header name to look up
+     * The descriptive information about this implementation.
      */
-    public String getHeader(String name);
+    private static final String info = "PersistentManager/1.0";
 
 
     /**
-     * Return an array of all the header names set for this response, or
-     * a zero-length array if no headers have been set.
+     * The descriptive name of this Manager implementation (for logging).
      */
-    public String[] getHeaderNames();
+    protected static String name = "PersistentManager";
+
+
+    // ------------------------------------------------------------- Properties
 
 
     /**
-     * Return an array of all the header values associated with the
-     * specified header name, or an zero-length array if there are no such
-     * header values.
-     *
-     * @param name Header name to look up
+     * Return descriptive information about this Manager implementation and
+     * the corresponding version number, in the format
+     * <code>&lt;description&gt;/&lt;version&gt;</code>.
      */
-    public String[] getHeaderValues(String name);
+    public String getInfo() {
 
+        return (this.info);
+
+    }
 
     /**
-     * Return the error message that was set with <code>sendError()</code>
-     * for this Response.
+     * Return the descriptive short name of this Manager implementation.
      */
-    public String getMessage();
+    public String getName() {
 
+        return (name);
 
-    /**
-     * Return the HTTP status code associated with this Response.
-     */
-    public int getStatus();
+    }
+ }
 
-
-    /**
-     * Reset this response, and specify the values for the HTTP status code
-     * and corresponding message.
-     *
-     * @exception IllegalStateException if this response has already been
-     *  committed
-     */
-    public void reset(int status, String message);
-
-
-}

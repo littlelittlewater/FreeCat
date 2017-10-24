@@ -2,6 +2,8 @@ package com.freecat.connector;
 
 
 
+import com.freecat.util.Enumerator;
+
 import javax.servlet.ServletInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -15,7 +17,6 @@ import java.util.Enumeration;
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  * @version $Revision: 1.13 $ $Date: 2002/03/18 07:15:40 $
- * @deprecated
  */
 
 public final class HttpRequestImpl
@@ -149,10 +150,8 @@ public final class HttpRequestImpl
 
 
     /**
-     * Allocate new header.
-     *
-     * @return an HttpHeader buffer allocated from the pool
-     */
+     * 分发一个新的header
+     * */
     public HttpHeader allocateHeader() {
         if (nextHeader == headerPool.length) {
             // Grow the pool
@@ -281,17 +280,6 @@ public final class HttpRequestImpl
      * Return the fully qualified name of the client that sent this request,
      * or the IP address of the client if the name cannot be determined.
      */
-    public String getRemoteHost() {
-
-        if (connector.getEnableLookups())
-            return (inet.getHostName());
-        else
-            return (getRemoteAddr());
-
-    }
-
-
-    // --------------------------------------------- HttpServletRequest Methods
 
 
     /**
