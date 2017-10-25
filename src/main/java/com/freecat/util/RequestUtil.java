@@ -300,7 +300,6 @@ public final class RequestUtil {
                     cookies.add(new Cookie(name, value));
                 }
             } catch (Throwable e) {
-                ;
             }
         }
 

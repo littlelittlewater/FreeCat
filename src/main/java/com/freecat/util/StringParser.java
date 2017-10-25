@@ -359,10 +359,7 @@ public final class StringParser {
      */
     protected boolean isWhite(char ch) {
 
-        if ((ch == ' ') || (ch == '\t') || (ch == '\r') || (ch == '\n'))
-            return (true);
-        else
-            return (false);
+        return (ch == ' ') || (ch == '\t') || (ch == '\r') || (ch == '\n');
 
     }
 

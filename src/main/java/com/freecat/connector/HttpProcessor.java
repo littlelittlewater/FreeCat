@@ -38,8 +38,8 @@ final class HttpProcessor
         this.connector = connector;
         this.debug = connector.getDebug();
         this.id = id;
-        this.request = (HttpRequest) connector.createRequest();
-        this.response = (HttpResponse) connector.createResponse();
+        this.request = connector.createRequest();
+        this.response = connector.createResponse();
         this.serverPort = connector.getPort();
         this.threadName =
           "HttpProcessor[" + connector.getPort() + "][" + id + "]"; 
@@ -301,7 +301,6 @@ final class HttpProcessor
                 try {
                     threadSync.wait(5000);
                 } catch (InterruptedException e) {
-                    ;
                 }
             }
         }

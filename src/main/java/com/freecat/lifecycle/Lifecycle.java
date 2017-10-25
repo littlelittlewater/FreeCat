@@ -73,55 +73,55 @@ public interface Lifecycle {
 
 
 
-    public static final String START_EVENT = "start";
+    String START_EVENT = "start";
 
 
-    public static final String BEFORE_START_EVENT = "before_start";
-
-
-
-    public static final String AFTER_START_EVENT = "after_start";
-
-
-    public static final String STOP_EVENT = "stop";
+    String BEFORE_START_EVENT = "before_start";
 
 
 
-    public static final String BEFORE_STOP_EVENT = "before_stop";
+    String AFTER_START_EVENT = "after_start";
 
 
-    public static final String AFTER_STOP_EVENT = "after_stop";
+    String STOP_EVENT = "stop";
+
+
+
+    String BEFORE_STOP_EVENT = "before_stop";
+
+
+    String AFTER_STOP_EVENT = "after_stop";
 
 
     /**
      * 添加一个监听器
      */
-    public void addLifecycleListener(LifecycleListener listener);
+    void addLifecycleListener(LifecycleListener listener);
 
 
     /**
      * 获取所有的监听器
      */
-    public LifecycleListener[] findLifecycleListeners();
+    LifecycleListener[] findLifecycleListeners();
 
 
     /**
      * 移除监听器
      *
      */
-    public void removeLifecycleListener(LifecycleListener listener);
+    void removeLifecycleListener(LifecycleListener listener);
 
 
     /**
      * 启动
      */
-    public void start() throws LifecycleException;
+    void start() throws LifecycleException;
 
 
     /**
      * 停止
      */
-    public void stop() throws LifecycleException;
+    void stop() throws LifecycleException;
 
 
 }
