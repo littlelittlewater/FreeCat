@@ -1,13 +1,13 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/SessionEvent.java,v 1.1 2001/07/29 03:43:54 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2001/07/29 03:43:54 $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/Mapper.java,v 1.3 2001/07/22 20:13:30 pier Exp $
+ * $Revision: 1.3 $
+ * $Date: 2001/07/22 20:13:30 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,97 +62,74 @@
  */
 
 
-package com.freecat.session;
+package com.freecat.container;
 
 
-import java.util.EventObject;
-
+import com.freecat.http.HttpRequest;
+import com.freecat.http.HttpResponse;
 
 /**
- * General event for notifying listeners of significant changes on a Session.
+ * Interface defining methods that a parent Container may implement to select
+ * a subordinate Container to process a particular Request, optionally
+ * modifying the properties of the Request to reflect the selections made.
+ * <p>
+ * A typical Container may be associated with a single Mapper that processes
+ * all requests to that Container, or a Mapper per request protocol that allows
+ * the same Container to support multiple protocols at once.
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2001/07/29 03:43:54 $
+ * @version $Revision: 1.3 $ $Date: 2001/07/22 20:13:30 $
  */
 
-public final class SessionEvent
-    extends EventObject {
+public interface Mapper {
+
+
+    // ------------------------------------------------------------- Properties
 
 
     /**
-     * The event data associated with this event.
+     * Return the Container with which this Mapper is associated.
      */
-    private Object data = null;
+    public Container getContainer();
 
 
     /**
-     * The Session on which this event occurred.
-     */
-    private Session session = null;
-
-
-    /**
-     * The event type this instance represents.
-     */
-    private String type = null;
-
-
-    /**
-     * Construct a new SessionEvent with the specified parameters.
+     * Set the Container with which this Mapper is associated.
      *
-     * @param session Session on which this event occurred
-     * @param type Event type
-     * @param data Event data
+     * @param container The newly associated Container
+     *
+     * @exception IllegalArgumentException if this Container is not
+     *  acceptable to this Mapper
      */
-    public SessionEvent(Session session, String type, Object data) {
-
-        super(session);
-        this.session = session;
-        this.type = type;
-        this.data = data;
-
-    }
+    public void setContainer(Container container);
 
 
     /**
-     * Return the event data of this event.
+     * Return the protocol for which this Mapper is responsible.
      */
-    public Object getData() {
-
-        return (this.data);
-
-    }
+    public String getProtocol();
 
 
     /**
-     * Return the Session on which this event occurred.
+     * Set the protocol for which this Mapper is responsible.
+     *
+     * @param protocol The newly associated protocol
      */
-    public Session getSession() {
+    public void setProtocol(String protocol);
 
-        return (this.session);
 
-    }
+    // --------------------------------------------------------- Public Methods
 
 
     /**
-     * Return the event type of this event.
+     * Return the child Container that should be used to process this Request,
+     * based upon its characteristics.  If no such child Container can be
+     * identified, return <code>null</code> instead.
+     *
+     * @param request Request being processed
+     * @param update Update the Request to reflect the mapping selection?
      */
-    public String getType() {
-
-        return (this.type);
-
-    }
-
-
-    /**
-     * Return a string representation of this event.
-     */
-    public String toString() {
-
-        return ("SessionEvent['" + getSession() + "','" +
-                getType() + "']");
-
-    }
+    public Container map(HttpRequest request, boolean update);
 
 
 }

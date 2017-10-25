@@ -70,26 +70,11 @@ import java.util.Map;
 
 
 /**
- * Extended implementation of <strong>HashMap</strong> that includes a
- * <code>locked</code> property.  This class can be used to safely expose
- * Catalina internal parameter map objects to user classes without having
- * to clone them in order to avoid modifications.  When first created, a
- * <code>ParmaeterMap</code> instance is not locked.
- *
- * @author Craig R. McClanahan
- * @version $Revision: 1.2 $ $Date: 2001/07/22 20:25:13 $
+ * 一个避免出错的hashmap
  */
 
 public final class ParameterMap extends HashMap {
 
-
-    // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * Construct a new, empty map with the default initial capacity and
-     * load factor.
-     */
     public ParameterMap() {
 
         super();
@@ -97,12 +82,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Construct a new, empty map with the specified initial capacity and
-     * default load factor.
-     *
-     * @param initialCapacity The initial capacity of this map
-     */
     public ParameterMap(int initialCapacity) {
 
         super(initialCapacity);
@@ -110,13 +89,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Construct a new, empty map with the specified initial capacity and
-     * load factor.
-     *
-     * @param initialCapacity The initial capacity of this map
-     * @param loadFactor The load factor of this map
-     */
     public ParameterMap(int initialCapacity, float loadFactor) {
 
         super(initialCapacity, loadFactor);
@@ -124,11 +96,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Construct a new map with the same mappings as the given map.
-     *
-     * @param map Map whose contents are dupliated in the new map
-     */
     public ParameterMap(Map map) {
 
         super(map);
@@ -139,15 +106,10 @@ public final class ParameterMap extends HashMap {
     // ------------------------------------------------------------- Properties
 
 
-    /**
-     * The current lock state of this parameter map.
-     */
+
     private boolean locked = false;
 
 
-    /**
-     * Return the locked state of this parameter map.
-     */
     public boolean isLocked() {
 
         return (this.locked);
@@ -155,11 +117,7 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Set the locked state of this parameter map.
-     *
-     * @param locked The new locked state
-     */
+
     public void setLocked(boolean locked) {
 
         this.locked = locked;
@@ -167,9 +125,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * The string manager for this package.
-     */
     private static final StringManager sm =
         StringManager.getManager("org.apache.catalina.util");
 
@@ -177,12 +132,6 @@ public final class ParameterMap extends HashMap {
     // --------------------------------------------------------- Public Methods
 
 
-
-    /**
-     * Remove all mappings from this map.
-     *
-     * @exception IllegalStateException if this map is currently locked
-     */
     public void clear() {
 
         if (locked)
@@ -193,19 +142,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Associate the specified value with the specified key in this map.  If
-     * the map previously contained a mapping for this key, the old value is
-     * replaced.
-     *
-     * @param key Key with which the specified value is to be associated
-     * @param value Value to be associated with the specified key
-     *
-     * @return The previous value associated with the specified key, or
-     *  <code>null</code> if there was no mapping for key
-     *
-     * @exception IllegalStateException if this map is currently locked
-     */
     public Object put(Object key, Object value) {
 
         if (locked)
@@ -216,15 +152,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Copy all of the mappings from the specified map to this one.  These
-     * mappings replace any mappings that this map had for any of the keys
-     * currently in the specified Map.
-     *
-     * @param map Mappings to be stored into this map
-     *
-     * @exception IllegalStateException if this map is currently locked
-     */
     public void putAll(Map map) {
 
         if (locked)
@@ -235,16 +162,6 @@ public final class ParameterMap extends HashMap {
     }
 
 
-    /**
-     * Remove the mapping for this key from the map if present.
-     *
-     * @param key Key whose mapping is to be removed from the map
-     *
-     * @return The previous value associated with the specified key, or
-     *  <code>null</code> if there was no mapping for that key
-     *
-     * @exception IllegalStateException if this map is currently locked
-     */
     public Object remove(Object key) {
 
         if (locked)

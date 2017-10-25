@@ -1,4 +1,4 @@
-package com.freecat.connector;
+package com.freecat.http;
 
 
 
@@ -6,10 +6,11 @@ package com.freecat.connector;
  * HTTP request line enum type.
  *
  * @author Remy Maucherat
- * @version $Revision: 1.6 $ $Date: 2002/03/18 07:15:40
+ * @version $Revision: 1.6 $ $Date: 2002/03/18 07:15:40 $
+ * @deprecated
  */
 
-public final class HttpRequestLine {
+final class HttpRequestLine {
 
 
     // -------------------------------------------------------------- Constants

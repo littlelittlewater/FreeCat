@@ -2,6 +2,8 @@ package com.freecat.connector;
 
 import com.freecat.container.Container;
 import com.freecat.container.Service;
+import com.freecat.http.HttpRequest;
+import com.freecat.http.HttpResponse;
 import com.freecat.lifecycle.Lifecycle;
 import com.freecat.lifecycle.LifecycleException;
 import com.freecat.lifecycle.LifecycleListener;
@@ -466,11 +468,11 @@ public final class HttpConnector
      * Create (or allocate) and return a Request object suitable for
      * specifying the contents of a Request to the responsible Container.
      */
-    public Request createRequest() {
+    public HttpRequest createRequest() {
 
         //        if (debug >= 2)
         //            log("createRequest: Creating new request");
-        HttpRequestImpl request = new HttpRequestImpl();
+        HttpRequest request = new HttpRequest();
         request.setConnector(this);
         return (request);
 
@@ -481,11 +483,11 @@ public final class HttpConnector
      * Create (or allocate) and return a Response object suitable for
      * receiving the contents of a Response from the responsible Container.
      */
-    public Response createResponse() {
+    public HttpResponse createResponse() {
 
         //        if (debug >= 2)
         //            log("createResponse: Creating new response");
-        HttpResponseImpl response = new HttpResponseImpl();
+        HttpResponse response = new HttpResponse();
         response.setConnector(this);
         return (response);
 

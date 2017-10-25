@@ -86,10 +86,7 @@ public final class LifecycleEvent
 
 
     /**
-     * Construct a new LifecycleEvent with the specified parameters.
-     *
-     * @param lifecycle Component on which this event occurred
-     * @param type Event type (required)
+     * 初始化生命周期
      */
     public LifecycleEvent(Lifecycle lifecycle, String type) {
 
@@ -99,11 +96,7 @@ public final class LifecycleEvent
 
 
     /**
-     * Construct a new LifecycleEvent with the specified parameters.
-     *
-     * @param lifecycle Component on which this event occurred
-     * @param type Event type (required)
-     * @param data Event data (if any)
+     * 初始化生命周期
      */
     public LifecycleEvent(Lifecycle lifecycle, String type, Object data) {
 
@@ -119,19 +112,19 @@ public final class LifecycleEvent
 
 
     /**
-     * The event data associated with this event.
+     * 与事件相关的数据
      */
     private Object data = null;
 
 
     /**
-     * The Lifecycle on which this event occurred.
+     * 触发的生命周期
      */
     private Lifecycle lifecycle = null;
 
 
     /**
-     * The event type this instance represents.
+     * 触发的类型
      */
     private String type = null;
 
@@ -139,29 +132,18 @@ public final class LifecycleEvent
     // ------------------------------------------------------------- Properties
 
 
-    /**
-     * Return the event data of this event.
-     */
     public Object getData() {
 
         return (this.data);
 
     }
 
-
-    /**
-     * Return the Lifecycle on which this event occurred.
-     */
     public Lifecycle getLifecycle() {
 
         return (this.lifecycle);
 
     }
 
-
-    /**
-     * Return the event type of this event.
-     */
     public String getType() {
 
         return (this.type);

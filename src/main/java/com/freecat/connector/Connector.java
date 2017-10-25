@@ -2,6 +2,8 @@ package com.freecat.connector;
 
 import com.freecat.container.Container;
 import com.freecat.container.Service;
+import com.freecat.http.HttpRequest;
+import com.freecat.http.HttpResponse;
 import com.freecat.lifecycle.LifecycleException;
 import com.freecat.net.ServerSocketFactory;
 
@@ -43,11 +45,11 @@ public interface Connector {
 
 
      //分配一个请求
-    public Request createRequest();
+    public HttpRequest createRequest();
 
 
     //分配一个响应
-    public Response createResponse();
+    public HttpResponse createResponse();
 
     /**
      *
