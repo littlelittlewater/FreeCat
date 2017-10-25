@@ -6,18 +6,10 @@ import com.freecat.http.HttpResponse;
 import com.freecat.lifecycle.Lifecycle;
 import com.freecat.lifecycle.LifecycleException;
 import com.freecat.lifecycle.LifecycleListener;
+import com.freecat.log.Logger;
 import com.freecat.util.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.TreeMap;
 
 
 /**
@@ -33,8 +25,8 @@ final class HttpProcessor
      *
      */
     public HttpProcessor(HttpConnector connector, int id) {
-
         super();
+        if(debug > Logger.INFORMATION) log("HttpProcessor is creating");
         this.connector = connector;
         this.debug = connector.getDebug();
         this.id = id;
@@ -172,7 +164,6 @@ final class HttpProcessor
      */
     synchronized void assign(Socket socket) {
 
-        // Wait for the Processor to get the previous Socket
         while (available) {
             try {
                 wait();
@@ -212,7 +203,6 @@ final class HttpProcessor
 
 
     private void log(String message) {
-
         Logger logger = connector.getContainer().getLogger();
         if (logger != null)
             logger.log(threadName + " " + message);
@@ -232,6 +222,9 @@ final class HttpProcessor
 
     private void process(Socket socket) {
         //处理消息
+        if(debug > 2){
+            log("dasd");
+        }
     }
 
 

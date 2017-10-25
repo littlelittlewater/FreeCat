@@ -1,12 +1,11 @@
 package com.freecat.container;
 
 
+import com.freecat.Loader.Loader;
 import com.freecat.http.HttpRequest;
 import com.freecat.http.HttpResponse;
-import com.freecat.util.Logger;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
+import com.freecat.log.Logger;
 
-import javax.naming.directory.DirContext;
 import javax.servlet.ServletException;
 import java.awt.event.ContainerListener;
 import java.beans.PropertyChangeListener;
@@ -18,79 +17,79 @@ import java.io.IOException;
  */
 public interface Container {
 
-    public static final String ADD_VALVE_EVENT = "addValve";
+    String ADD_VALVE_EVENT = "addValve";
 
-    public static final String REMOVE_CHILD_EVENT = "removeChild";
-
-
-    public static final String REMOVE_MAPPER_EVENT = "removeMapper";
+    String REMOVE_CHILD_EVENT = "removeChild";
 
 
-    public static final String REMOVE_VALVE_EVENT = "removeValve";
+    String REMOVE_MAPPER_EVENT = "removeMapper";
+
+
+    String REMOVE_VALVE_EVENT = "removeValve";
 
 
     // ------------------------------------------------------------- Properties
 
-    public Loader getLoader();
+    Loader getLoader();
 
 
-    public void setLoader(Loader loader);
+    void setLoader(Loader loader);
 
 
-    public Logger getLogger();
-
-
-
-    public void setLogger(Logger logger);
+    Logger getLogger();
 
 
 
-    public Container getParent();
+    void setLogger(Logger logger);
 
 
-    public void setParent(Container container);
+
+    Container getParent();
 
 
-    public ClassLoader getParentClassLoader();
-
-    public void setParentClassLoader(ClassLoader parent);
-
-    public void addChild(Container child);
-
-    public void addMapper(Mapper mapper);
-
-    public void addPropertyChangeListener(PropertyChangeListener listener);
+    void setParent(Container container);
 
 
-    public Container findChild(String name);
+    ClassLoader getParentClassLoader();
+
+    void setParentClassLoader(ClassLoader parent);
+
+    void addChild(Container child);
+
+    void addMapper(Mapper mapper);
+
+    void addPropertyChangeListener(PropertyChangeListener listener);
 
 
-    public Container[] findChildren();
+    Container findChild(String name);
 
 
-    public ContainerListener[] findContainerListeners();
+    Container[] findChildren();
 
 
-    public Mapper findMapper(String protocol);
-
-    public Mapper[] findMappers();
+    ContainerListener[] findContainerListeners();
 
 
-    public void invoke(HttpRequest request, HttpResponse response)
+    Mapper findMapper(String protocol);
+
+    Mapper[] findMappers();
+
+
+    void invoke(HttpRequest request, HttpResponse response)
             throws IOException, ServletException;
 
 
-    public Container map(HttpRequest request, boolean update);
+    Container map(HttpRequest request, boolean update);
 
-    public void removeChild(Container child);
+    void removeChild(Container child);
 
-    public void removeContainerListener(ContainerListener listener);
-
-
-    public void removeMapper(Mapper mapper);
+    void removeContainerListener(ContainerListener listener);
 
 
-    public void removePropertyChangeListener(PropertyChangeListener listener);
+    void removeMapper(Mapper mapper);
+
+
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
 
 }

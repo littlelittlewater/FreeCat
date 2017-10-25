@@ -10,7 +10,7 @@ import com.freecat.lifecycle.LifecycleListener;
 import com.freecat.net.DefaultServerSocketFactory;
 import com.freecat.net.ServerSocketFactory;
 import com.freecat.util.LifecycleSupport;
-import com.freecat.util.Logger;
+import com.freecat.log.Logger;
 import com.freecat.util.StringManager;
 
 import java.io.IOException;
@@ -470,8 +470,7 @@ public final class HttpConnector
      */
     public HttpRequest createRequest() {
 
-        //        if (debug >= 2)
-        //            log("createRequest: Creating new request");
+        if (debug >= 2)  log("createRequest: Creating new request");
         HttpRequest request = new HttpRequest();
         request.setConnector(this);
         return (request);
@@ -479,14 +478,9 @@ public final class HttpConnector
     }
 
 
-    /**
-     * Create (or allocate) and return a Response object suitable for
-     * receiving the contents of a Response from the responsible Container.
-     */
     public HttpResponse createResponse() {
 
-        //        if (debug >= 2)
-        //            log("createResponse: Creating new response");
+        if (debug >= 2) log("createResponse: Creating new response");
         HttpResponse response = new HttpResponse();
         response.setConnector(this);
         return (response);
@@ -504,8 +498,7 @@ public final class HttpConnector
      */
     void recycle(HttpProcessor processor) {
 
-        //        if (debug >= 2)
-        //            log("recycle: Recycling processor " + processor);
+        if (debug >= 2) log("recycle: Recycling processor " + processor);
         processors.push(processor);
 
     }
@@ -524,22 +517,18 @@ public final class HttpConnector
 
         synchronized (processors) {
             if (processors.size() > 0) {
-                // if (debug >= 2)
-                // log("createProcessor: Reusing existing processor");
+                 if (debug >= 2) log("createProcessor: Reusing existing processor");
                 return ((HttpProcessor) processors.pop());
             }
             if ((maxProcessors > 0) && (curProcessors < maxProcessors)) {
-                // if (debug >= 2)
-                // log("createProcessor: Creating new processor");
+                if (debug >= 2)  log("createProcessor: Creating new processor");
                 return (newProcessor());
             } else {
                 if (maxProcessors < 0) {
-                    // if (debug >= 2)
-                    // log("createProcessor: Creating new processor");
+                     if (debug >= 2) log("createProcessor: Creating new processor");
                     return (newProcessor());
                 } else {
-                    // if (debug >= 2)
-                    // log("createProcessor: Cannot create new processor");
+                     if (debug >= 2) log("createProcessor: Cannot create new processor");
                     return (null);
                 }
             }
@@ -548,11 +537,6 @@ public final class HttpConnector
     }
 
 
-    /**
-     * Log a message on the Logger associated with our Container (if any).
-     *
-     * @param message Message to be logged
-     */
     private void log(String message) {
         Logger logger = container.getLogger();
         String localName = threadName;
@@ -566,12 +550,6 @@ public final class HttpConnector
     }
 
 
-    /**
-     * Log a message on the Logger associated with our Container (if any).
-     *
-     * @param message   Message to be logged
-     * @param throwable Associated exception
-     */
     private void log(String message, Throwable throwable) {
 
         Logger logger = container.getLogger();
@@ -588,18 +566,13 @@ public final class HttpConnector
     }
 
 
-    /**
-     * Create and return a new processor suitable for processing HTTP
-     * requests and returning the corresponding responses.
-     */
     private HttpProcessor newProcessor() {
 
-        //        if (debug >= 2)
-        //            log("newProcessor: Creating new processor");
+        if (debug >= 2) log("newProcessor: Creating new processor");
         HttpProcessor processor = new HttpProcessor(this, curProcessors++);
         if (processor instanceof Lifecycle) {
             try {
-                ((Lifecycle) processor).start();
+                processor.start();
             } catch (LifecycleException e) {
                 log("newProcessor", e);
                 return (null);
@@ -610,18 +583,6 @@ public final class HttpConnector
 
     }
 
-
-    /**
-     * 初始化化监听的socket
-     *
-     * @return
-     * @throws IOException
-     * @throws KeyStoreException
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
-     * @throws UnrecoverableKeyException
-     * @throws KeyManagementException
-     */
     private ServerSocket open()
             throws IOException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, UnrecoverableKeyException,
@@ -693,16 +654,13 @@ public final class HttpConnector
                         if (started && !stopped)
                             log("accept error: ", e);
                         if (!stopped) {
-                            //                    if (debug >= 3)
-                            //                        log("run: Closing server socket");
+                            if (debug >= 3) log("run: Closing server socket");
                             serverSocket.close();
-                            //                        if (debug >= 3)
-                            //                            log("run: Reopening server socket");
+                            if (debug >= 3) log("run: Reopening server socket");
                             serverSocket = open();
                         }
                     }
-                    //                    if (debug >= 3)
-                    //                        log("run: IOException processing completed");
+                    if (debug >= 3) log("run: IOException processing completed");
                 } catch (IOException ioe) {
                     log("socket reopen, io problem: ", ioe);
                     break;
@@ -733,7 +691,6 @@ public final class HttpConnector
                     log(sm.getString("httpConnector.noProcessor"));
                     socket.close();
                 } catch (IOException e) {
-                    ;
                 }
                 continue;
             }
@@ -760,7 +717,6 @@ public final class HttpConnector
     private void threadStart() {
 
         log(sm.getString("httpConnector.starting"));
-
         thread = new Thread(this, threadName);
         thread.setDaemon(true);
         thread.start();
@@ -779,7 +735,6 @@ public final class HttpConnector
         try {
             threadSync.wait(5000);
         } catch (InterruptedException e) {
-            ;
         }
         thread = null;
 
@@ -913,7 +868,7 @@ public final class HttpConnector
             HttpProcessor processor = (HttpProcessor) created.elementAt(i);
             if (processor instanceof Lifecycle) {
                 try {
-                    ((Lifecycle) processor).stop();
+                    processor.stop();
                 } catch (LifecycleException e) {
                     log("HttpConnector.stop", e);
                 }
@@ -926,7 +881,6 @@ public final class HttpConnector
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    ;
                 }
             }
             //停止后台

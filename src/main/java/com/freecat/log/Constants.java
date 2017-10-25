@@ -1,13 +1,9 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/Contained.java,v 1.3 2001/07/22 20:13:30 pier Exp $
- * $Revision: 1.3 $
- * $Date: 2001/07/22 20:13:30 $
- *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,25 +58,17 @@
  */
 
 
-package com.freecat.pipeline;
-
-
-import com.freecat.container.Container;
+package com.freecat.log;
 
 /**
- * <p>Decoupling interface which specifies that an implementing class is
- * associated with at most one <strong>Container</strong> instance.</p>
+ * Manifest constants for the <code>org.apache.catalina.logger</code>
+ * package.
  *
  * @author Craig R. McClanahan
- * @author Peter Donald
- * @version $Revision: 1.3 $ $Date: 2001/07/22 20:13:30 $
  */
 
-public interface Contained {
+public class Constants {
 
-    Container getContainer();
-
-    void setContainer(Container container);
-
+    public static final String Package = "org.apache.catalina.logger";
 
 }

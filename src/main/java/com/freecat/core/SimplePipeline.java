@@ -3,6 +3,7 @@ package com.freecat.core;
 import com.freecat.container.Container;
 import com.freecat.http.HttpRequest;
 import com.freecat.http.HttpResponse;
+import com.freecat.pipeline.Contained;
 import com.freecat.pipeline.Pipeline;
 import com.freecat.pipeline.Valve;
 import com.freecat.pipeline.ValveContext;

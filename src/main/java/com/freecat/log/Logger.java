@@ -1,5 +1,5 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/Contained.java,v 1.3 2001/07/22 20:13:30 pier Exp $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/Logger.java,v 1.3 2001/07/22 20:13:30 pier Exp $
  * $Revision: 1.3 $
  * $Date: 2001/07/22 20:13:30 $
  *
@@ -7,7 +7,7 @@
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,25 +62,61 @@
  */
 
 
-package com.freecat.pipeline;
+package com.freecat.log;
 
 
 import com.freecat.container.Container;
 
-/**
- * <p>Decoupling interface which specifies that an implementing class is
- * associated with at most one <strong>Container</strong> instance.</p>
- *
- * @author Craig R. McClanahan
- * @author Peter Donald
- * @version $Revision: 1.3 $ $Date: 2001/07/22 20:13:30 $
- */
+import java.beans.PropertyChangeListener;
 
-public interface Contained {
+
+/**
+ * 日志记录器
+ */
+public interface Logger {
+
+
+    // ----------------------------------------------------- Manifest Constants
+
+    int FATAL = Integer.MIN_VALUE;
+
+    int ERROR = 1;
+
+    int WARNING = 2;
+
+    int INFORMATION = 3;
+
+    int DEBUG = 4;
+
 
     Container getContainer();
 
     void setContainer(Container container);
+
+
+    String getInfo();
+
+    int getVerbosity();
+
+
+    void setVerbosity(int verbosity);
+
+    void addPropertyChangeListener(PropertyChangeListener listener);
+
+
+    void log(String message);
+
+    void log(Exception exception, String msg);
+
+
+    void log(String message, Throwable throwable);
+
+    void log(String message, int verbosity);
+
+
+    void log(String message, Throwable throwable, int verbosity);
+
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
 
 }

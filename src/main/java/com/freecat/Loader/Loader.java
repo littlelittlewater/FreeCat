@@ -1,13 +1,13 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/Contained.java,v 1.3 2001/07/22 20:13:30 pier Exp $
- * $Revision: 1.3 $
- * $Date: 2001/07/22 20:13:30 $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/Loader.java,v 1.6 2002/09/19 22:55:47 amyroh Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/09/19 22:55:47 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,25 +62,41 @@
  */
 
 
-package com.freecat.pipeline;
-
+package com.freecat.Loader;
 
 import com.freecat.container.Container;
+import java.beans.PropertyChangeListener;
 
 /**
- * <p>Decoupling interface which specifies that an implementing class is
- * associated with at most one <strong>Container</strong> instance.</p>
- *
- * @author Craig R. McClanahan
- * @author Peter Donald
- * @version $Revision: 1.3 $ $Date: 2001/07/22 20:13:30 $
+ * 类的载入
  */
+public interface Loader {
 
-public interface Contained {
+
+    ClassLoader getClassLoader();
+
 
     Container getContainer();
 
+
     void setContainer(Container container);
+
+    boolean getReloadable();
+
+
+    void setReloadable(boolean reloadable);
+
+
+    void addPropertyChangeListener(PropertyChangeListener listener);
+
+    void addRepository(String repository);
+
+    String[] findRepositories();
+
+    boolean modified();
+
+
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
 
 }
