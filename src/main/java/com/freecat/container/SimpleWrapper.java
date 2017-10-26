@@ -26,6 +26,7 @@ public class SimpleWrapper implements Wrapper, Pipeline {
   private String name;
   private SimplePipeline pipeline = new SimplePipeline(this);
   protected Container parent = null;
+  private Logger logger;
 
   public SimpleWrapper() {
     pipeline.setBasic(new SimpleWrapperValve());
@@ -113,10 +114,11 @@ public class SimpleWrapper implements Wrapper, Pipeline {
   }
 
   public Logger getLogger() {
-    return null;
+    return this.logger;
   }
 
   public void setLogger(Logger logger) {
+    this.logger =  logger ;
   }
 
   public String getName() {

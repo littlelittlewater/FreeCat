@@ -8,7 +8,7 @@ package com.freecat.http;
  * @deprecated
  */
 
-final class HttpHeader {
+public final class HttpHeader {
 
 
     // -------------------------------------------------------------- Constants
