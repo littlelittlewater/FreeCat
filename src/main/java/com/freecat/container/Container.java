@@ -92,4 +92,9 @@ public interface Container {
     void removePropertyChangeListener(PropertyChangeListener listener);
 
 
+    //获取名字
+    String getName();
+
+    //设置名字
+    void setName(String name);
 }

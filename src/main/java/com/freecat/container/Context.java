@@ -7,6 +7,6 @@ import javax.servlet.ServletContext;
 /**
  * Created by liyuan on 17-10-18.
  */
-public interface Context {
-
+public interface Context extends Container{
+    void addServletMapping(String s, String primitive);
 }

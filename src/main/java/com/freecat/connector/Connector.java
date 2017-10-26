@@ -9,6 +9,8 @@ import com.freecat.net.ServerSocketFactory;
 //连接器的接口 用于连接用户的请求
 public interface Connector {
 
+
+
     //获取container
     Container getContainer();
 

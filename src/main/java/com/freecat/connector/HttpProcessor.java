@@ -218,14 +218,15 @@ final class HttpProcessor
             parseRequest(input, output);
             parseHeaders(input);
 
-            // check if this is a request for a servlet or a static resource
-            // a request for a servlet begins with "/servlet/"
-            if (request.getRequestURI().startsWith("/servlet/")) {
+
+            connector.getContainer().invoke(request, response);
+
+           /* if (request.getRequestURI().startsWith("/servlet/")) {
                 connector.getContainer().invoke(request, response);
             } else {
                 StaticResourceProcessor processor = new StaticResourceProcessor();
                 processor.process(request, response);
-            }
+            }*/
 
             // Close the socket
             socket.close();
