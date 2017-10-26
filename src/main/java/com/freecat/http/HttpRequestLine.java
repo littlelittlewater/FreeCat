@@ -2,13 +2,6 @@ package com.freecat.http;
 
 
 
-/**
- * HTTP request line enum type.
- *
- * @author Remy Maucherat
- * @version $Revision: 1.6 $ $Date: 2002/03/18 07:15:40 $
- * @deprecated
- */
 
 public final class HttpRequestLine {
 

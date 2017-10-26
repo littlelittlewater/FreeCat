@@ -1,5 +1,6 @@
 package com.freecat.http;
 
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
@@ -12,6 +13,10 @@ public class ResponseWriter extends PrintWriter {
 
   public ResponseWriter(OutputStreamWriter writer) {
     super(writer);
+  }
+
+  public ResponseWriter(OutputStream output) {
+    super(output);
   }
 
   public void print(boolean b) {

@@ -304,7 +304,9 @@ public class HttpResponse implements HttpServletResponse {
     this.request = request;
   }
 
-  /* This method is used to serve a static page */
+  /***
+   * 发送一个静态资源
+   */
   public void sendStaticResource() throws IOException {
     byte[] bytes = new byte[BUFFER_SIZE];
     FileInputStream fis = null;
@@ -472,11 +474,11 @@ public class HttpResponse implements HttpServletResponse {
   }
 
   public PrintWriter getWriter() throws IOException {
-    ResponseStream newStream = new ResponseStream(this);
+   /* ResponseStream newStream = new ResponseStream(this);
     newStream.setCommit(false);
     OutputStreamWriter osr =
-      new OutputStreamWriter(newStream, getCharacterEncoding());
-    writer = new ResponseWriter(osr);
+      new OutputStreamWriter(newStream, getCharacterEncoding());*/
+    writer = new ResponseWriter(output);
     return writer;
   }
 
@@ -541,7 +543,6 @@ public class HttpResponse implements HttpServletResponse {
         contentLength = Integer.parseInt(value);
       }
       catch (NumberFormatException e) {
-        ;
       }
       if (contentLength >= 0)
         setContentLength(contentLength);

@@ -1,9 +1,8 @@
 package com.freecat.startup;
 
 import com.freecat.connector.HttpConnector;
-import com.freecat.container.Context;
-import com.freecat.container.HttpContext;
-import com.freecat.container.SimpleWrapper;
+import com.freecat.core.SimpleLoader;
+import com.freecat.core.SimpleWrapper;
 import com.freecat.container.Wrapper;
 import com.freecat.lifecycle.LifecycleException;
 import com.freecat.log.Logger;
@@ -16,6 +15,8 @@ public class BootStrap {
         HttpConnector connector = new HttpConnector();
         connector.setDebug(Logger.DEBUG);
         Wrapper wrapper = new SimpleWrapper();
+        wrapper.setServletClass("PrimitiveServlet");
+        wrapper.setLoader(new SimpleLoader());
         Logger logger = new SystemOutLogger();
         wrapper.setLogger(logger);
         connector.setContainer(wrapper);

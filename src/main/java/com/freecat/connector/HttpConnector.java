@@ -1,7 +1,6 @@
 package com.freecat.connector;
 
 import com.freecat.container.Container;
-import com.freecat.container.Service;
 import com.freecat.http.HttpRequest;
 import com.freecat.http.HttpResponse;
 import com.freecat.lifecycle.Lifecycle;
@@ -31,12 +30,6 @@ import java.util.Vector;
  */
 public final class HttpConnector
         implements Connector, Lifecycle, Runnable {
-
-
-    /**
-     * 关联的service
-     */
-    private Service service = null;
 
 
     /**
@@ -178,26 +171,6 @@ public final class HttpConnector
     private boolean allowChunking = true;
 
 
-    /**
-     * Return the <code>Service</code> with which we are associated (if any).
-     */
-    public Service getService() {
-
-        return (this.service);
-
-    }
-
-
-    /**
-     * Set the <code>Service</code> with which we are associated (if any).
-     *
-     * @param service The service that owns this Engine
-     */
-    public void setService(Service service) {
-
-        this.service = service;
-
-    }
 
 
     /**

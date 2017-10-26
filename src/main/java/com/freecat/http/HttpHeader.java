@@ -5,7 +5,6 @@ package com.freecat.http;
  *
  * @author Remy Maucherat
  * @version $Revision: 1.4 $ $Date: 2002/03/18 07:15:40 $
- * @deprecated
  */
 
 public final class HttpHeader {
