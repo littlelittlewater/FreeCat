@@ -94,8 +94,6 @@ public interface Logger {
     void setContainer(Container container);
 
 
-    String getInfo();
-
     int getVerbosity();
 
 

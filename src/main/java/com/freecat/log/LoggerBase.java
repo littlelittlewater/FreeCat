@@ -76,36 +76,15 @@ import java.io.PrintWriter;
 public abstract class LoggerBase
     implements Logger {
 
-
-    // ----------------------------------------------------- Instance Variables
-
     protected Container container = null;
 
     protected int debug = 0;
 
-
-    protected static final String info =
-        "org.apache.catalina.logger.LoggerBase/1.0";
-
-
-    /**
-     * The property change support for this component.
-     */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
-    /**
-     * The verbosity level for above which log messages may be filtered.
-     */
     protected int verbosity = ERROR;
 
 
-    // ------------------------------------------------------------- Properties
-
-
-    /**
-     * Return the Container with which this Logger has been associated.
-     */
     public Container getContainer() {
 
         return (container);
@@ -113,71 +92,31 @@ public abstract class LoggerBase
     }
 
 
-    /**
-     * Set the Container with which this Logger has been associated.
-     *
-     * @param container The associated Container
-     */
     public void setContainer(Container container) {
-
         Container oldContainer = this.container;
         this.container = container;
         support.firePropertyChange("container", oldContainer, this.container);
 
     }
 
-
-    /**
-     * Return the debugging detail level for this component.
-     */
     public int getDebug() {
 
         return (this.debug);
 
     }
 
-
-    /**
-     * Set the debugging detail level for this component.
-     *
-     * @param debug The new debugging detail level
-     */
     public void setDebug(int debug) {
 
         this.debug = debug;
 
     }
 
-
-    /**
-     * Return descriptive information about this Logger implementation and
-     * the corresponding version number, in the format
-     * <code>&lt;description&gt;/&lt;version&gt;</code>.
-     */
-    public String getInfo() {
-
-        return (info);
-
-    }
-
-
-    /**
-     * Return the verbosity level of this logger.  Messages logged with a
-     * higher verbosity than this level will be silently ignored.
-     */
     public int getVerbosity() {
 
         return (this.verbosity);
 
     }
 
-
-    /**
-     * Set the verbosity level of this logger.  Messages logged with a
-     * higher verbosity than this level will be silently ignored.
-     *
-     * @param verbosity The new verbosity level
-     */
     public void setVerbosity(int verbosity) {
 
         this.verbosity = verbosity;
@@ -185,12 +124,6 @@ public abstract class LoggerBase
     }
 
 
-    /**
-     * Set the verbosity level of this logger.  Messages logged with a
-     * higher verbosity than this level will be silently ignored.
-     *
-     * @param verbosityLevel The new verbosity level, as a string
-     */
     public void setVerbosityLevel(String verbosity) {
 
         if ("FATAL".equalsIgnoreCase(verbosity))
@@ -206,44 +139,15 @@ public abstract class LoggerBase
 
     }
 
-
-    // --------------------------------------------------------- Public Methods
-
-
-    /**
-     * Add a property change listener to this component.
-     *
-     * @param listener The listener to add
-     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
 
         support.addPropertyChangeListener(listener);
 
     }
 
-
-    /**
-     * Writes the specified message to a servlet log file, usually an event
-     * log.  The name and type of the servlet log is specific to the
-     * servlet container.  This message will be logged unconditionally.
-     *
-     * @param message A <code>String</code> specifying the message to be
-     *  written to the log file
-     */
     public abstract void log(String msg);
 
 
-    /**
-     * Writes the specified exception, and message, to a servlet log file.
-     * The implementation of this method should call
-     * <code>log(msg, exception)</code> instead.  This method is deprecated
-     * in the ServletContext interface, but not deprecated here to avoid
-     * many useless compiler warnings.  This message will be logged
-     * unconditionally.
-     *
-     * @param exception An <code>Exception</code> to be reported
-     * @param msg The associated message string
-     */
     public void log(Exception exception, String msg) {
 
         log(msg, exception);
@@ -251,16 +155,6 @@ public abstract class LoggerBase
     }
 
 
-    /**
-     * Writes an explanatory message and a stack trace for a given
-     * <code>Throwable</code> exception to the servlet log file.  The name
-     * and type of the servlet log file is specific to the servlet container,
-     * usually an event log.  This message will be logged unconditionally.
-     *
-     * @param msg A <code>String</code> that describes the error or
-     *  exception
-     * @param throwable The <code>Throwable</code> error or exception
-     */
     public void log(String msg, Throwable throwable) {
 
         CharArrayWriter buf = new CharArrayWriter();
@@ -281,15 +175,6 @@ public abstract class LoggerBase
     }
 
 
-    /**
-     * Writes the specified message to the servlet log file, usually an event
-     * log, if the logger is set to a verbosity level equal to or higher than
-     * the specified value for this message.
-     *
-     * @param message A <code>String</code> specifying the message to be
-     *  written to the log file
-     * @param verbosity Verbosity level of this message
-     */
     public void log(String message, int verbosity) {
 
         if (this.verbosity >= verbosity)
@@ -297,17 +182,6 @@ public abstract class LoggerBase
 
     }
 
-
-    /**
-     * Writes the specified message and exception to the servlet log file,
-     * usually an event log, if the logger is set to a verbosity level equal
-     * to or higher than the specified value for this message.
-     *
-     * @param message A <code>String</code> that describes the error or
-     *  exception
-     * @param throwable The <code>Throwable</code> error or exception
-     * @param verbosity Verbosity level of this message
-     */
     public void log(String message, Throwable throwable, int verbosity) {
 
         if (this.verbosity >= verbosity)
@@ -316,11 +190,6 @@ public abstract class LoggerBase
     }
 
 
-    /**
-     * Remove a property change listener from this component.
-     *
-     * @param listener The listener to remove
-     */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
 
         support.removePropertyChangeListener(listener);
