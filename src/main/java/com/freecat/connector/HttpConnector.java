@@ -214,64 +214,6 @@ public final class HttpConnector
 
     }
 
-
-    /**
-     * Get the allow chunking flag.
-     */
-    public boolean isChunkingAllowed() {
-
-        return (allowChunking);
-
-    }
-
-
-    /**
-     * Get the allow chunking flag.
-     */
-    public boolean getAllowChunking() {
-
-        return isChunkingAllowed();
-
-    }
-
-
-    /**
-     * Set the allow chunking flag.
-     *
-     * @param allowChunking Allow chunking flag
-     */
-    public void setAllowChunking(boolean allowChunking) {
-
-        this.allowChunking = allowChunking;
-
-    }
-
-
-    /**
-     * Return the bind IP address for this Connector.
-     */
-    public String getAddress() {
-
-        return (this.address);
-
-    }
-
-
-    /**
-     * Set the bind IP address for this Connector.
-     *
-     * @param address The bind IP address
-     */
-    public void setAddress(String address) {
-
-        this.address = address;
-
-    }
-
-
-    /**
-     * Is this connector available for processing requests?
-     */
     public boolean isAvailable() {
 
         return (started);
@@ -279,21 +221,12 @@ public final class HttpConnector
     }
 
 
-    /**
-     * Return the input buffer size for this Connector.
-     */
     public int getBufferSize() {
 
         return (this.bufferSize);
 
     }
 
-
-    /**
-     * Set the input buffer size for this Connector.
-     *
-     * @param bufferSize The new input buffer size.
-     */
     public void setBufferSize(int bufferSize) {
 
         this.bufferSize = bufferSize;
@@ -438,8 +371,8 @@ public final class HttpConnector
 
 
     /**
-     * Create (or allocate) and return a Request object suitable for
-     * specifying the contents of a Request to the responsible Container.
+     * 创建一个request请求
+     * @return
      */
     public HttpRequest createRequest() {
 
@@ -481,10 +414,7 @@ public final class HttpConnector
 
 
     /**
-     * Create (or allocate) and return an available processor for use in
-     * processing a specific HTTP request, if possible.  If the maximum
-     * allowed processors have already been created and are in use, return
-     * <code>null</code> instead.
+     * 从栈中或者其他渠道获得一个processor
      */
     private HttpProcessor createProcessor() {
 

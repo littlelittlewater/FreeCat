@@ -79,12 +79,7 @@ import java.sql.Timestamp;
 
 
 /**
- * Implementation of <b>Logger</b> that appends log messages to a file
- * named {prefix}.{date}.{suffix} in a configured directory, with an
- * optional preceding timestamp.
- *
- * @author Craig R. McClanahan
- * @version $Revision: 1.8 $ $Date: 2002/06/09 02:19:43 $
+ * 文件记录
  */
 
 public class FileLogger

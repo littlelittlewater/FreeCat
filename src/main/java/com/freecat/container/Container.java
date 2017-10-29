@@ -28,8 +28,6 @@ public interface Container {
     String REMOVE_VALVE_EVENT = "removeValve";
 
 
-    // ------------------------------------------------------------- Properties
-
     Loader getLoader();
 
 
@@ -43,9 +41,7 @@ public interface Container {
     void setLogger(Logger logger);
 
 
-
     Container getParent();
-
 
     void setParent(Container container);
 
