@@ -16,11 +16,11 @@ public class SimpleWrapperValve implements Valve, Contained {
 	protected Container container;
 
 	public void invoke(HttpRequest request, HttpResponse response,
-					   ValveContext valveContext) throws IOException, ServletException {
+					   ValveContext valveContext) throws IOException  {
 
 		SimpleWrapper wrapper = (SimpleWrapper) getContainer();
 		Servlet servlet = null;
-		// Allocate a servlet instance to process this request
+
 		try {
 			servlet = wrapper.allocate();
 			if (request != null && response != null) {
@@ -33,9 +33,6 @@ public class SimpleWrapperValve implements Valve, Contained {
 		}
 	}
 
-	public String getInfo() {
-		return null;
-	}
 
 	public Container getContainer() {
 		return container;

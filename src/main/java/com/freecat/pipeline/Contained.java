@@ -67,20 +67,10 @@ package com.freecat.pipeline;
 
 import com.freecat.container.Container;
 
-/**
- * <p>Decoupling interface which specifies that an implementing class is
- * associated with at most one <strong>Container</strong> instance.</p>
- *
- * @author Craig R. McClanahan
- * @author Peter Donald
- * @version $Revision: 1.3 $ $Date: 2001/07/22 20:13:30 $
- */
-
 public interface Contained {
 
     Container getContainer();
 
     void setContainer(Container container);
-
 
 }

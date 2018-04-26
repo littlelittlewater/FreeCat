@@ -16,61 +16,52 @@ import java.io.IOException;
  * container 容器
  */
 public interface Container {
-
-    String ADD_VALVE_EVENT = "addValve";
-
-    String REMOVE_CHILD_EVENT = "removeChild";
-
-
-    String REMOVE_MAPPER_EVENT = "removeMapper";
-
-
-    String REMOVE_VALVE_EVENT = "removeValve";
-
-
+    /**添加一个Loader**/
     Loader getLoader();
 
-
+    /**设置一个Loader**/
     void setLoader(Loader loader);
 
-
+    /**获取一个Logger**/
     Logger getLogger();
 
-
-
+    /**设置一个Logger**/
     void setLogger(Logger logger);
 
-
+    /**获取父类的容器**/
     Container getParent();
 
+    /**设置父类的容器**/
     void setParent(Container container);
 
-
+    /**获取父类的类加载器**/
     ClassLoader getParentClassLoader();
 
+    /**设置父类的类加载器**/
     void setParentClassLoader(ClassLoader parent);
 
+    /**添加一个孩子**/
     void addChild(Container child);
 
+    /**添加一个Mapper**/
     void addMapper(Mapper mapper);
 
-    void addPropertyChangeListener(PropertyChangeListener listener);
 
-
+    /**添加一个查找孩子**/
     Container findChild(String name);
 
-
+    /**添加一个查找孩纸们**/
     Container[] findChildren();
 
 
-    ContainerListener[] findContainerListeners();
 
-
+    /**查找映射规则**/
     Mapper findMapper(String protocol);
 
+    /**查找映射规则**/
     Mapper[] findMappers();
 
-
+    /**主要的Invoke方法**/
     void invoke(HttpRequest request, HttpResponse response)
             throws IOException, ServletException;
 
@@ -79,18 +70,11 @@ public interface Container {
 
     void removeChild(Container child);
 
-    void removeContainerListener(ContainerListener listener);
 
+    String  getName();
+
+    void  setName(String name);
 
     void removeMapper(Mapper mapper);
 
-
-    void removePropertyChangeListener(PropertyChangeListener listener);
-
-
-    //获取名字
-    String getName();
-
-    //设置名字
-    void setName(String name);
 }

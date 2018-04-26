@@ -1,10 +1,6 @@
 package com.freecat.http;
 
-/** this class copies methods from org.apache.catalina.connector.HttpRequestBase
- *  and org.apache.catalina.connector.http.HttpRequestImpl.
- *  The HttpRequestImpl class employs a pool of HttpHeader objects for performance
- *  These two classes will be explained in Chapter 4.
- */
+
 import com.freecat.connector.HttpConnector;
 import com.freecat.util.Enumerator;
 import com.freecat.util.ParameterMap;
@@ -135,11 +131,7 @@ public class HttpRequest implements HttpServletRequest {
     }
   }
 
-  /**
-   * Parse the parameters of this request, if it has not already occurred.
-   * If parameters are present in both the query string and the request
-   * content, they are merged.
-   */
+
   protected void parseParameters() {
     if (parsed)
       return;

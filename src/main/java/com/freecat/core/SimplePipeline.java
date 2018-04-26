@@ -17,11 +17,11 @@ public class SimplePipeline implements Pipeline {
     setContainer(container);
   }
 
-  // The basic Valve (if any) associated with this Pipeline.
+  /** 最基础的运行阀 **/
   protected Valve basic = null;
-  // The Container with which this Pipeline is associated.
+  /** 容器 **/
   protected Container container = null;
-  // the array of Valves
+  /** 需要执行的过滤器序列 **/
   protected Valve valves[] = new Valve[0];
 
   public void setContainer(Container container) {
@@ -55,28 +55,27 @@ public class SimplePipeline implements Pipeline {
 
   public void invoke(HttpRequest request, HttpResponse response)
     throws IOException, ServletException {
-    // Invoke the first Valve in this pipeline for this request
+     /** 通过context定义的方法来执行  **/
     (new SimplePipelineValveContext()).invokeNext(request, response);
   }
 
   public void removeValve(Valve valve) {
   }
 
-  // this class is copied from org.apache.catalina.core.StandardPipeline class's
-  // StandardPipelineValveContext inner class.
+  /**
+   * 迭代
+   */
   protected class SimplePipelineValveContext implements ValveContext {
 
     protected int stage = 0;
 
-    public String getInfo() {
-      return null;
-    }
+
 
     public void invokeNext(HttpRequest request, HttpResponse response)
       throws IOException, ServletException {
       int subscript = stage;
       stage = stage + 1;
-      // Invoke the requested Valve for the current request thread
+      // 通过数组依次执行
       if (subscript < valves.length) {
         valves[subscript].invoke(request, response, this);
       }
@@ -87,6 +86,6 @@ public class SimplePipeline implements Pipeline {
         throw new ServletException("No valve");
       }
     }
-  } // end of inner class
+  }
 
 }

@@ -72,31 +72,10 @@ import java.beans.PropertyChangeListener;
  */
 public interface Loader {
 
-
     ClassLoader getClassLoader();
-
 
     Container getContainer();
 
-
     void setContainer(Container container);
-
-    boolean getReloadable();
-
-
-    void setReloadable(boolean reloadable);
-
-
-    void addPropertyChangeListener(PropertyChangeListener listener);
-
-    void addRepository(String repository);
-
-    String[] findRepositories();
-
-    boolean modified();
-
-
-    void removePropertyChangeListener(PropertyChangeListener listener);
-
 
 }

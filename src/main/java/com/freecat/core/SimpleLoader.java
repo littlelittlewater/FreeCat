@@ -46,40 +46,4 @@ public class SimpleLoader implements Loader {
     this.container = container;
   }
 
-
-  public boolean getDelegate() {
-    return false;
-  }
-
-  public void setDelegate(boolean delegate) {
-  }
-
-  public String getInfo() {
-    return "A simple loader";
-  }
-
-  public boolean getReloadable() {
-    return false;
-  }
-
-  public void setReloadable(boolean reloadable) {
-  }
-
-  public void addPropertyChangeListener(PropertyChangeListener listener) {
-  }
-
-  public void addRepository(String repository) {
-  }
-
-  public String[] findRepositories() {
-    return null;
-  }
-
-  public boolean modified() {
-    return false;
-  }
-
-  public void removePropertyChangeListener(PropertyChangeListener listener) {
-  }
-
 }

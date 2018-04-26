@@ -16,16 +16,10 @@ public class SimpleContextMapper implements Mapper {
 
 	public void setContainer(Container container) {
 		if (!(container instanceof SimpleContext))
-			throw new IllegalArgumentException("Illegal type of container");
+			throw new IllegalArgumentException("不合法的参数");
 		context = (SimpleContext) container;
 	}
 
-	public String getProtocol() {
-		return null;
-	}
-
-	public void setProtocol(String protocol) {
-	}
 
 	public Container map(HttpRequest request, boolean update) {
 		String contextPath =request.getContextPath();

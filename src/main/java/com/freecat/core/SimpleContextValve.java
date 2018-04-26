@@ -34,9 +34,6 @@ public class SimpleContextValve implements Valve, Contained {
 		wrapper.invoke(request, response);
 	}
 
-	public String getInfo() {
-		return null;
-	}
 
 	public Container getContainer() {
 		return container;

@@ -75,7 +75,7 @@ public final class HttpConnector
 
 
     /**
-     * The server socket factory for this component.
+     *   socketFactory
      */
     private ServerSocketFactory factory = null;
 
@@ -398,7 +398,7 @@ public final class HttpConnector
 
 
     /**
-     * Recycle the specified Processor so that it can be used again.
+     * 回收资源
      *
      * @param processor The processor to be recycled
      */
@@ -486,6 +486,9 @@ public final class HttpConnector
 
     }
 
+    /**
+     *  开启socket
+     ***/
     private ServerSocket open()
             throws IOException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, UnrecoverableKeyException,
@@ -545,10 +548,7 @@ public final class HttpConnector
                     log("接受连接 serverSocket.accept()");
                 if (connectionTimeout > 0)
                     socket.setSoTimeout(connectionTimeout);
-            } catch (AccessControlException ace) {
-                log("socket accept security exception", ace);
-                continue;
-            } catch (IOException e) {
+            }  catch (Exception e) {
                 if (debug >= 3)
                     log("run: Accept returned IOException", e);
                 try {
@@ -564,26 +564,10 @@ public final class HttpConnector
                         }
                     }
                     if (debug >= 3) log("run: IOException processing completed");
-                } catch (IOException ioe) {
+                } catch (Exception ioe) {
                     log("socket reopen, io problem: ", ioe);
                     break;
-                } catch (KeyStoreException kse) {
-                    log("socket reopen, keystore problem: ", kse);
-                    break;
-                } catch (NoSuchAlgorithmException nsae) {
-                    log("socket reopen, keystore algorithm problem: ", nsae);
-                    break;
-                } catch (CertificateException ce) {
-                    log("socket reopen, certificate problem: ", ce);
-                    break;
-                } catch (UnrecoverableKeyException uke) {
-                    log("socket reopen, unrecoverable key: ", uke);
-                    break;
-                } catch (KeyManagementException kme) {
-                    log("socket reopen, key management problem: ", kme);
-                    break;
                 }
-
                 continue;
             }
 

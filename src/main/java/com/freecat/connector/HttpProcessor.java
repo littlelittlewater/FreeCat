@@ -494,7 +494,7 @@ final class HttpProcessor
 
         int status = 0;
         if (status != Constants.PROCESSOR_IDLE) {
-            // Only wait if the processor is actually processing a command
+            // 停止线程
             synchronized (threadSync) {
                 try {
                     threadSync.wait(5000);
